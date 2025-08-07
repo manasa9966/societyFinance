@@ -1,0 +1,35 @@
+<div class="hero-container">
+    <div class="card">
+        <h3 class="brand-highlight">Register</h3>
+        <form [formGroup]="loginForm" class="example-form">
+            <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" type="email" placeholder="Enter your email">
+                <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Email is required</mat-error>
+                <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Invalid email format</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password" type="password" placeholder="Enter your password">
+                <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is required</mat-error>
+                <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">Password must be at least 6
+                    characters</mat-error>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="submit" class="btn btn-success btn-custom" (click)="onSignUp()">Sign Up</button>
+        </form>
+
+        <div class="note-text" *ngIf="showError">
+            <mat-error>{{errorMessage}}</mat-error>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="text-center note-text">
+            Already have an account?
+        </div>
+
+        <button mat-raised-button color="accent" class="btn btn-custom mt-3"
+            (click)="onLoginRedirect()">Sign-in</button>
+    </div>
+</div>
