@@ -9,6 +9,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -21,6 +22,7 @@ import { WelcomePageComponent } from './components/welcome-page/welcome-page.com
     BrowserModule,
     AppRoutingModule,
     MaterialModule,
+    NgbModule,
  
   ],
   providers: [

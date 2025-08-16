@@ -1,1 +1,38 @@
-<p>dashboard-home works!</p>
+<mat-toolbar class="mat-elevation-z8 toolbar">
+    <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon> menu </mat-icon>
+  </button>
+     <mat-icon class="logo-image">account_balance</mat-icon>
+    <span class="logo-title">E - Socitey</span>
+  </mat-toolbar>
+  
+  <mat-sidenav-container >
+    <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+        <h4 class="name">{{this.displayName | titlecase }}</h4>
+  
+        <mat-divider></mat-divider>
+        <button mat-button class="menu-button">
+            <mat-icon>date_range</mat-icon>
+            <span>Book Slot</span>
+        </button>
+        <button mat-button class="menu-button">
+          <mat-icon>history</mat-icon>
+          <span>Booking History</span>
+        </button>
+        <button mat-button class="menu-button">
+            <mat-icon>perm_contact_calendar</mat-icon>
+            <span>Profile</span>
+        </button>
+  
+        <mat-divider></mat-divider>
+  
+        <button mat-button class="menu-button mt-5" (click)="logout()">
+          <mat-icon>arrow_back_ios</mat-icon>
+          <span>Logout</span>
+        </button>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <div class="content mat-elevation-z4">  
+        </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
