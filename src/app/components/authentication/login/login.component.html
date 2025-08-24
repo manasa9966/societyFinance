@@ -1,38 +1,57 @@
 <div class="hero-container">
     <div class="card">
-        <h3 class="brand-highlight">Login</h3>
-        <form [formGroup]="loginForm" class="example-form">
+        <!-- Header -->
+        <div class="header">
+            <mat-icon class="logo-icon">account_balance</mat-icon>
+            <h2 class="brand">eSociety</h2>
+        </div>
+
+        <h3 class="welcome">Welcome Back</h3>
+        <p class="subtitle">Sign in to Society Financial Management</p>
+
+        <!-- Form -->
+        <form [formGroup]="loginForm" class="example-form" (ngSubmit)="onLogin()">
             <mat-form-field appearance="outline" class="example-full-width">
-                <mat-label>Email</mat-label>
-                <input matInput formControlName="email" type="email" placeholder="Enter your email">
-                <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Email is required</mat-error>
+                <mat-label>Username</mat-label>
+                <mat-icon matPrefix>person</mat-icon>
+                <input matInput formControlName="email" type="email" placeholder="Enter your username" />
+                <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Username is required</mat-error>
                 <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Invalid email format</mat-error>
             </mat-form-field>
+
             <mat-form-field appearance="outline" class="example-full-width">
                 <mat-label>Password</mat-label>
-                <input matInput formControlName="password" type="password" placeholder="Enter your password">
+                <mat-icon matPrefix>lock</mat-icon>
+                <input matInput formControlName="password" type="password" placeholder="Enter your password" />
                 <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is required</mat-error>
                 <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">Password must be at least 6
                     characters</mat-error>
             </mat-form-field>
 
-            <button mat-raised-button color="primary" type="submit" class="btn btn-success btn-custom"
-                (click)="onLogin()">Sign In</button>
+            <!-- Extra Options -->
+            <div class="extra-options">
+                <mat-checkbox color="primary">Remember me</mat-checkbox>
+            </div>
+
+            <!-- Submit -->
+            <button mat-raised-button class="btn-login" type="submit" (click)="onLogin()"
+                [disabled]="loginForm.invalid">
+                Login
+            </button>
+
+            <button mat-raised-button class="google-login" type="submit" (click)="onSignInWithGoogle()">
+                Sign In with Google
+            </button>
         </form>
 
-        <div class="note-text" *ngIf="showError">
-            <mat-error>{{errorMessage}}</mat-error>
+        <!-- Divider -->
+        <div class="divider-text">
+            <span>or</span>
         </div>
 
-        <div class="divider"></div>
-
-        <button color="primary" class="btn btn-success btn-custom mt-3" (click)="onSignInWithGoogle()">Sign-In with Google</button>
-
-        <div class="text-center note-text">
-            Don't have an account?
+        <!-- Footer -->
+        <div class="footer-text">
+            Don’t have an account? <a (click)="onSignupRedirect()">Sign up</a>
         </div>
-
-        <button mat-raised-button color="accent" class="btn btn-custom mt-3"
-            (click)="onSignupRedirect()">Sign-Up</button>
     </div>
 </div>
