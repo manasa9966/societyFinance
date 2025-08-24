@@ -1,0 +1,73 @@
+<div class="form-container">
+    <h1 class="main-heading">Add Family Details</h1>
+    <h4 class="sub-heading">Fill in the details below to add a new family</h4>
+
+    <div class="family-form-grid">
+        <form [formGroup]="familyForm">
+
+            <div class="flatNumber">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Flat Number</mat-label>
+                    <input matInput formControlName="flatNumber" placeholder="Enter flat number">
+                    <mat-error *ngIf="familyForm.get('flatNumber')?.hasError('required')">
+                        Flat Number is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="familyName">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Family Name</mat-label>
+                    <input matInput formControlName="familyName" placeholder="Enter Family name">
+                    <mat-error *ngIf="familyForm.get('familyName')?.hasError('required')">
+                        Family Name is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="phone">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Phone</mat-label>
+                    <input matInput type="tel" formControlName="phone" placeholder="Enter phone number">
+                    <mat-error *ngIf="familyForm.get('phone')?.hasError('required')">
+                        Phone number is required
+                    </mat-error>
+                    <mat-error *ngIf="familyForm.get('phone')?.hasError('pattern')">
+                        Enter a valid phone number
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="email">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" formControlName="email" placeholder="Enter email">
+                    <mat-error *ngIf="familyForm.get('email')?.hasError('required')">
+                        Email is required
+                    </mat-error>
+                    <mat-error *ngIf="familyForm.get('email')?.hasError('email')">
+                        Enter a valid email address
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="familyMembers">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Total Family Members</mat-label>
+                    <input matInput type="number" formControlName="familyMembers"
+                        placeholder="Enter Total Family Members">
+                    <mat-error *ngIf="familyForm.get('familyMembers')?.hasError('required')">
+                        This field is required
+                    </mat-error>
+                    <mat-error *ngIf="familyForm.get('familyMembers')?.hasError('min')">
+                        Total Family Members must be a greater than 0
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="submit">
+                <button mat-raised-button class="submit-button" (click)="onSubmit()" [disabled]="familyForm.invalid">Add Family</button>
+            </div>
+        </form>
+    </div>
+</div>
