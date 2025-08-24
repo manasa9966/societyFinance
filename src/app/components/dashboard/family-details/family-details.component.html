@@ -3,7 +3,7 @@
         <div class="title-container">
             <h1 class="main-heading">Family Details</h1>
             @if (this.sharedService.isAdminUser()) {
-            <h4 class="sub-heading">Add or Edit Family Members</h4>
+            <h4 class="sub-heading">Add or Edit Family Details</h4>
             }
         </div>
         @if (this.sharedService.isAdminUser()) {
@@ -20,8 +20,8 @@
             </div>
             <mat-divider></mat-divider>
             <mat-card-content class="card-content">
-                <p><mat-icon>call</mat-icon> {{ item.phone }}</p>
-                <p><mat-icon>email</mat-icon> {{ item.email }}</p>
+                <p><mat-icon>call</mat-icon> {{ '+91 ' + item.phone }}</p>
+                <p><mat-icon>email</mat-icon> {{ item.email | titlecase}}</p>
                 <p><mat-icon>groups</mat-icon> {{ item.familyMembers }} Members</p>
             </mat-card-content>
         </mat-card>
