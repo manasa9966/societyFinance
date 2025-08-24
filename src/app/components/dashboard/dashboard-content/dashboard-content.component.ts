@@ -41,7 +41,8 @@ export class DashboardContentComponent implements OnInit {
       point: {
         backgroundColor: '#007bff',
         radius: 5
-      }
+      },
+      bar: { backgroundColor: '#ffd500ff'}
     }
   };
   lineChartLegend = true;
