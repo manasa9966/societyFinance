@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Auth, User, signOut } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SharedService } from '../../../services/shared.service';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -19,10 +20,15 @@ export class DashboardHomeComponent implements OnInit {
   auth = inject(Auth);
 
   displayName = '';
+  pageName: string = 'dashboardPage';
+
+  isAdmin = false;
 
 
-  constructor() { 
+  constructor(private sharedService: SharedService) { 
+    this.sharedService.setUser(this.user);
     this.displayName = this.user.email ? this.user.email.split('@')[0] : 'User';
+    this.isAdmin = this.sharedService.isAdminUser();
   }
 
   ngOnInit(): void {
@@ -31,11 +37,16 @@ export class DashboardHomeComponent implements OnInit {
 
   logout(): void {
     signOut(this.auth).then(() => {
+      this.sharedService.clearUser();
       this.router.navigate(['/auth/login']);
     }).catch((error: any) => {
       console.error('Error occurred:', error);
     })
     console.log('User logged out');
+  }
+
+  nagigateToPage(page: string): void {
+    this.pageName = page;
   }
 
 }

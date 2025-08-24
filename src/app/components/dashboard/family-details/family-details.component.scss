@@ -1,0 +1,95 @@
+@import '../../../variable.scss';
+
+.family-container {
+    padding: 20px;
+    background: #f5f7fb;
+    min-height: 90vh;
+
+    .main-heading {
+        font-size: 24px;
+        font-weight: 700;
+        font-family: $font;
+        margin-bottom: 20px;
+    }
+
+    .sub-heading {
+        font-size: 16px;
+        font-weight: 500;
+        font-family: $font;
+        color: #666;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 25px;
+
+        button {
+            font-family: $font;
+            font-weight: 600;
+            padding: 6px 16px;
+            color: #fff;
+            background-color: #1a73e8;
+            border-radius: 8px;
+        }
+
+        button:hover {
+            background-color: #fff;
+            color: #1a73e8;
+            border: 1px solid #1a73e8;
+        }
+    }
+
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 20px;
+    }
+
+    .dashboard-card {
+        border-radius: 12px;
+        padding: 16px;
+        background: #fff;
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+
+            .family-name {
+                font-size: 18px;
+                font-weight: 600;
+            }
+
+            .flat-badge {
+                background-color: #1a73e8;
+                color: #fff;
+                font-size: 12px;
+                padding: 4px 10px;
+                border-radius: 20px;
+                font-weight: 500;
+            }
+        }
+
+        mat-divider {
+            margin-bottom: 12px;
+        }
+
+        .card-content {
+            p {
+                font-size: 14px;
+                margin: 8px 0;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                mat-icon {
+                    font-size: 18px;
+                    color: #444;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,79 @@
+<div class="dashboard-container">
+    <h1 class="dashboard-heading">Dashboard</h1>
+
+    <div class="card-container">
+        <mat-card class="dashboard-card mat-elevation-z8">
+            <div class="card">
+                <mat-card-title class="card-title">{{isAdmin ? 'Total Collections' : 'Total Expenses'}}</mat-card-title>
+                <mat-card-content class="card-content" [ngClass]="{'green-sub-text': !isAdmin}">{{isAdmin ? totalCollections: totalExpenses}}</mat-card-content>
+                @if (isAdmin) {
+                    <span class="sub-text green-sub-text">
+                        <mat-icon class="card-icon">arrow_upward</mat-icon>
+                        12.5% from last month
+                    </span>
+                }
+            </div>
+        </mat-card>
+
+        <mat-card class="dashboard-card mat-elevation-z8">
+            <div class="card">
+                <mat-card-title class="card-title">Pending Payments</mat-card-title>
+                <mat-card-content class="card-content" [ngClass]="{'red-sub-text': !isAdmin}">{{pendingPayments}}</mat-card-content>
+                @if (isAdmin) {
+                    <span class="sub-text red-sub-text">
+                        <mat-icon class="card-icon">arrow_downward</mat-icon>
+                        8.5% from last month
+                    </span>
+                }
+            </div>
+        </mat-card>
+
+        <mat-card class="dashboard-card mat-elevation-z8 red">
+            <div class="card">
+                <mat-card-title class="card-title">{{isAdmin ? 'Fines Collected' : 'Total Fines'}}</mat-card-title>
+                <mat-card-content class="card-content" [ngClass]="{'blue-sub-text': !isAdmin}">{{fines}}</mat-card-content>
+                @if (isAdmin) {
+                    <span class="sub-text green-sub-text">
+                        <mat-icon class="card-icon">arrow_upward</mat-icon>
+                        4.5% from last month
+                    </span>
+                }
+            </div>
+        </mat-card>
+
+        @if (isAdmin) {
+        <mat-card class="dashboard-card mat-elevation-z8 red">
+            <div class="card">
+                <mat-card-title class="card-title">Complaints Recived</mat-card-title>
+                <mat-card-content class="card-content">{{bookings}}</mat-card-content>
+            </div>
+        </mat-card>
+        }
+    </div>
+
+
+    <div class="chart-box-container">
+        <div class="chart-container">
+            <div class="chart-header">
+                <h1 class="dashboard-sub-heading">Payment Status</h1>
+                <mat-button-toggle-group (change)="changeButton($event.value)" [hideSingleSelectionIndicator]="true">
+                    <mat-button-toggle value="m">Monthly</mat-button-toggle>
+                    <mat-button-toggle value="y">Yearly</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+
+            <div style="display: block;">
+                <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+                    [legend]="lineChartLegend" [type]="isAdmin ? 'bar': 'line'">
+                </canvas>
+            </div>
+        </div>
+        <div class="recent-bookings">
+            <h1 class="dashboard-sub-heading">{{isAdmin ? 'Recent Complaints' : 'Pending Bills'}}</h1>
+            <div class="content">
+                <p>{{isAdmin ? 'No Recent Complaints' : 'No Pending Bills'}}</p>
+            </div>
+
+        </div>
+    </div>
+</div>
