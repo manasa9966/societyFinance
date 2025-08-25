@@ -24,6 +24,12 @@
                 <p><mat-icon>email</mat-icon> {{ item.email | titlecase}}</p>
                 <p><mat-icon>groups</mat-icon> {{ item.familyMembers }} Members</p>
             </mat-card-content>
+            @if (this.sharedService.isAdminUser()) {
+            <mat-card-actions>
+                <button mat-button color="primary">Edit</button>
+                <button mat-button color="warn">Delete</button> 
+            </mat-card-actions>
+            }
         </mat-card>
         }
     </div>
