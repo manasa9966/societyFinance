@@ -27,10 +27,20 @@ export class SharedService {
   //Famillies
 
   addFamily(family: any) {
+    family.createdAt = new Date().toISOString();
+    family.isActive = true;
     return this.db.list('families').push(family);
   }
 
   getFamilies() {
     return this.db.list('families').valueChanges();
+  }
+
+  updateFamily(key: string, family: any) {
+    return this.db.list('families').update(key, family);
+  }
+
+  deleteFamily(key: string) {
+    return this.db.list('families').remove(key);
   }
 }

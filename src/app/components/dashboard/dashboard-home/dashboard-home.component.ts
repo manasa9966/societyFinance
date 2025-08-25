@@ -2,6 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Auth, User, signOut } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from '../../../services/shared.service';
+import { SideNavItem } from '../../../interfaces/sideNav';
+import { adminMenu, userMenu } from '../../../constants/menu';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -9,6 +11,8 @@ import { SharedService } from '../../../services/shared.service';
   styleUrl: './dashboard-home.component.scss'
 })
 export class DashboardHomeComponent implements OnInit {
+
+  sideNavList: SideNavItem[] = adminMenu
 
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
@@ -29,6 +33,12 @@ export class DashboardHomeComponent implements OnInit {
     this.sharedService.setUser(this.user);
     this.displayName = this.user.email ? this.user.email.split('@')[0] : 'User';
     this.isAdmin = this.sharedService.isAdminUser();
+
+    if (!this.isAdmin) {
+      this.sideNavList = userMenu;
+    } else {
+      this.sideNavList = adminMenu;
+    }
   }
 
   ngOnInit(): void {
