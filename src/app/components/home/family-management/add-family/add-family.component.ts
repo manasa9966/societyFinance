@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SharedService } from '../../../services/shared.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Family } from '../../../interfaces/families';
+import { SharedService } from '../../../../services/shared.service';
 
 @Component({
   selector: 'app-add-family',

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedService } from '../../../services/shared.service';
+import { SharedService } from '../../../../services/shared.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddFamilyComponent } from '../add-family/add-family.component';
-import { Family } from '../../../interfaces/families';
+import { Family } from '../../../../interfaces/families';
 import { AnyARecord } from 'dns';
 
 @Component({

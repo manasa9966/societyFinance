@@ -1,18 +1,17 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { Auth, User, signOut } from '@angular/fire/auth';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SharedService } from '../../../services/shared.service';
+import { Component, inject } from '@angular/core';
 import { SideNavItem } from '../../../interfaces/sideNav';
 import { adminMenu, userMenu } from '../../../constants/menu';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Auth, signOut, User } from '@angular/fire/auth';
+import { SharedService } from '../../../services/shared.service';
 
 @Component({
-  selector: 'app-dashboard-home',
-  templateUrl: './dashboard-home.component.html',
-  styleUrl: './dashboard-home.component.scss'
+  selector: 'app-side-nav',
+  templateUrl: './side-nav.component.html',
+  styleUrl: './side-nav.component.scss'
 })
-export class DashboardHomeComponent implements OnInit {
-
-  sideNavList: SideNavItem[] = adminMenu
+export class SideNavComponent {
+sideNavList: SideNavItem[] = adminMenu
 
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
@@ -41,10 +40,6 @@ export class DashboardHomeComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-
-  }
-
   logout(): void {
     signOut(this.auth).then(() => {
       this.sharedService.clearUser();
@@ -58,5 +53,4 @@ export class DashboardHomeComponent implements OnInit {
   nagigateToPage(page: string): void {
     this.pageName = page;
   }
-
 }
