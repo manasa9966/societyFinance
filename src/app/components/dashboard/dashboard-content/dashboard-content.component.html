@@ -5,7 +5,7 @@
         <mat-card class="dashboard-card mat-elevation-z8">
             <div class="card">
                 <mat-card-title class="card-title">{{isAdmin ? 'Total Collections' : 'Total Expenses'}}</mat-card-title>
-                <mat-card-content class="card-content" [ngClass]="{'green-sub-text': !isAdmin}">{{isAdmin ? totalCollections: totalExpenses}}</mat-card-content>
+                <mat-card-content class="card-content" [ngClass]="{'green-sub-text': !isAdmin}">₹{{isAdmin ? totalCollections: totalExpenses}}</mat-card-content>
                 @if (isAdmin) {
                     <span class="sub-text green-sub-text">
                         <mat-icon class="card-icon">arrow_upward</mat-icon>
@@ -18,7 +18,7 @@
         <mat-card class="dashboard-card mat-elevation-z8">
             <div class="card">
                 <mat-card-title class="card-title">Pending Payments</mat-card-title>
-                <mat-card-content class="card-content" [ngClass]="{'red-sub-text': !isAdmin}">{{pendingPayments}}</mat-card-content>
+                <mat-card-content class="card-content" [ngClass]="{'red-sub-text': !isAdmin}">₹{{pendingPayments}}</mat-card-content>
                 @if (isAdmin) {
                     <span class="sub-text red-sub-text">
                         <mat-icon class="card-icon">arrow_downward</mat-icon>
@@ -31,7 +31,7 @@
         <mat-card class="dashboard-card mat-elevation-z8 red">
             <div class="card">
                 <mat-card-title class="card-title">{{isAdmin ? 'Fines Collected' : 'Total Fines'}}</mat-card-title>
-                <mat-card-content class="card-content" [ngClass]="{'blue-sub-text': !isAdmin}">{{fines}}</mat-card-content>
+                <mat-card-content class="card-content" [ngClass]="{'blue-sub-text': !isAdmin}">₹{{fines}}</mat-card-content>
                 @if (isAdmin) {
                     <span class="sub-text green-sub-text">
                         <mat-icon class="card-icon">arrow_upward</mat-icon>

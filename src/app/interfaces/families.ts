@@ -5,4 +5,6 @@ export interface Family {
     email: string;
     familyMembers: number;
     flatNumber: string;
+    createdAt: string;
+    isActive: boolean;
 }

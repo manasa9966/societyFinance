@@ -10,11 +10,11 @@ export class DashboardContentComponent implements OnInit {
 
   isAdmin = false;
 
-  totalCollections: string = '₹2,45,680';
-  totalExpenses: string = '₹70,450';
-  pendingPayments: string;
+  totalCollections: number = 0;
+  totalExpenses: number = 0;
+  pendingPayments: number = 0;
   bookings: number = 4;
-  fines: string;
+  fines: number = 0;
 
 
   viewSelection?: string = 'y';
@@ -42,21 +42,14 @@ export class DashboardContentComponent implements OnInit {
         backgroundColor: '#007bff',
         radius: 5
       },
-      bar: { backgroundColor: '#ffd500ff'}
+      bar: { backgroundColor: '#ffd500ff' }
     }
   };
   lineChartLegend = true;
 
 
-  constructor(public  sharedService: SharedService) { 
+  constructor(public sharedService: SharedService) {
     this.isAdmin = this.sharedService.isAdminUser();
-    if(this.isAdmin) {
-      this.pendingPayments = '₹75,200'; 
-      this.fines = '₹5,600';
-    } else {
-      this.pendingPayments = '₹2,450';   
-      this.fines = '₹0';
-    }
     this.updateChart();
   }
 
@@ -68,6 +61,7 @@ export class DashboardContentComponent implements OnInit {
       this.lineChartData = [{ data: this.yearlyData, label: 'Total Payments in Rupees' }];
       this.lineChartLabels = this.yearlyChartLabel;
     }
+    this.rollDigits();
   }
 
   changeButton(value: string) {
@@ -78,6 +72,53 @@ export class DashboardContentComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  rollDigits() {
+    const duration = 1000;
+    const steps = 60;
+    const intervalTime = duration / steps;
+
+    let collectionsTarget = 245680;
+    let expensesTarget = 70450;
+    let paymentsTargetAdmin = 75200;
+    let paymentsTargetUser = 2450;
+    let finesTarget = this.isAdmin ? 5600 : 0;
+
+    let collectionsStep = collectionsTarget / steps;
+    let expensesStep = expensesTarget / steps;
+    let paymentsStep = this.isAdmin ? paymentsTargetAdmin / steps : paymentsTargetUser / steps;
+    let finesStep = finesTarget / steps;
+
+    let currentStep = 0;
+
+    const interval = setInterval(() => {
+      currentStep++;
+
+      if (this.isAdmin) {
+        this.totalCollections = Math.floor(collectionsStep * currentStep);
+        this.pendingPayments = Math.floor(paymentsStep * currentStep);
+        this.fines = Math.floor(finesStep * currentStep);
+      } else {
+        this.totalExpenses = Math.floor(expensesStep * currentStep);
+        this.pendingPayments = Math.floor(paymentsStep * currentStep);
+        this.fines = Math.floor(finesStep * currentStep);
+      }
+
+      if (currentStep >= steps) {
+        if (this.isAdmin) {
+          this.totalCollections = collectionsTarget;
+          this.pendingPayments = paymentsTargetAdmin;
+          this.fines = finesTarget;
+        } else {
+          this.totalExpenses = expensesTarget;
+          this.pendingPayments = paymentsTargetUser;
+          this.fines = finesTarget;
+        }
+        clearInterval(interval);
+      }
+    }, intervalTime);
+  }
+
 
 
 }

@@ -123,3 +123,14 @@
     display: inline-flex !important;
   }
 }
+
+  .app-title {
+    font-size: 18px;
+    font-family: $font;
+    font-weight: 600;
+
+    .highlight {
+      font-family: $font;
+      color: #1a73e8;
+    }
+  }
