@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -33,11 +34,19 @@ export class SharedService {
   }
 
   getFamilies() {
-    return this.db.list('families').valueChanges();
+    return this.db.list('families').snapshotChanges().pipe(
+      map(actions => actions.map(action => ({
+        id: action.key,
+        ...action.payload.val() as object
+      })))
+    );
   }
 
-  updateFamily(key: string, family: any) {
-    return this.db.list('families').update(key, family);
+  updateFamily(id: string, updatedData: any): Promise<void> {
+    if (!id) {
+      return Promise.reject('Family ID is missing');
+    }
+    return this.db.object(`families/${id}`).set(updatedData);
   }
 
   deleteFamily(key: string) {

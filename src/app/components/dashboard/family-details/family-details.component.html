@@ -1,3 +1,4 @@
+@if (!loding) {
 <div class="family-container">
     <div class="header">
         <div class="title-container">
@@ -26,11 +27,17 @@
             </mat-card-content>
             @if (this.sharedService.isAdminUser()) {
             <mat-card-actions>
-                <button mat-button color="primary">Edit</button>
-                <button mat-button color="warn">Delete</button> 
+                <button mat-stroked-button class="edit" (click)="editFamilyDetails(item)">Edit</button>
+                <button mat-stroked-button class="delete" (click)="deleteFamily(item)">Delete</button>
             </mat-card-actions>
             }
         </mat-card>
         }
     </div>
 </div>
+} @else {
+  <div class="spinner">
+      <mat-spinner [strokeWidth]="5"></mat-spinner>
+      <span class="loading-txt">{{loaderText}}</span>
+  </div>
+}

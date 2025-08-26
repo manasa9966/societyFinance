@@ -8,7 +8,7 @@ export const adminMenu = [
 ];
 
 export const userMenu = [
-  { label: 'Dashboard', icon: 'dashboard', route: 'dashboard' },
+  { label: 'Dashboard', icon: 'dashboard', route: 'dashboardPage' },
   { label: 'My Payments', icon: 'payment', route: 'payments' },
   { label: 'Outward Requests', icon: 'assignment', route: 'requests' },
   { label: 'Complaints', icon: 'chat_bubble_outline', route: 'complaints' },

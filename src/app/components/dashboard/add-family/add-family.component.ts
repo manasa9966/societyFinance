@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SharedService } from '../../../services/shared.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Family } from '../../../interfaces/families';
 
 @Component({
   selector: 'app-add-family',
@@ -11,23 +12,24 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class AddFamilyComponent implements OnInit {
   familyForm!: FormGroup;
 
-  loader: boolean = false;
-  loaderText = '';
-  showEndTime = false;
-  showUPI = true;
+  isEditFlow: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private sharedService: SharedService,
     public dialogRef: MatDialogRef<AddFamilyComponent>,
-    @Inject(MAT_DIALOG_DATA) public sentData: any
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit(): void {
     this.initializeForm();
+    this.isEditFlow = this.data.isEdit;
+    if (this.data.isEdit && this.data.familyData) {
+      this.familyForm.patchValue(this.data.familyData);
+    }
   }
 
-    initializeForm() {
+  initializeForm() {
     this.familyForm = this.fb.group({
       familyName: ['', Validators.required],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
@@ -38,6 +40,14 @@ export class AddFamilyComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.isEditFlow) {
+      this.updateFamily();
+    } else {
+      this.addFamily();
+    }
+  }
+
+  addFamily() {
     if (this.familyForm.valid) {
       this.sharedService.addFamily(this.familyForm.value)
         .then(() => {
@@ -51,5 +61,19 @@ export class AddFamilyComponent implements OnInit {
     }
   }
 
+  updateFamily() {
+    if (this.familyForm.valid) {
+      const updatedData = { ...this.data.familyData, ...this.familyForm.value };
+      this.sharedService.updateFamily(this.data.familyData.id, updatedData)
+        .then(() => {
+          alert('Family updated successfully!');
+          this.familyForm.reset();
+          this.dialogRef.close();
+        })
+        .catch(error => {
+          alert('Error updating family: ' + error);
+        });
+    }
+  }
 
 }
