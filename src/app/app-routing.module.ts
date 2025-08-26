@@ -14,7 +14,7 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    loadChildren: () => import('./components/dashboard/dashboard.module').then(m => m.DashboardModule),
+    loadChildren: () => import('./components/home/home.module').then(m => m.HomeModule),
     canActivate: [AuthGuard],
     data: {
       authGuardPipe: redirectToLogin

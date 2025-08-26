@@ -1,32 +1,33 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardRoutingModule } from './dashboard-routing.module';
-import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
+
+import { HomeRoutingModule } from './home-routing.module';
+import { DashboardContentComponent } from './dashboard-content/dashboard-content.component';
 import { MaterialModule } from '../../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DashboardContentComponent } from './dashboard-content/dashboard-content.component';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
-import { FamilyDetailsComponent } from './family-details/family-details.component';
-import { AddFamilyComponent } from './add-family/add-family.component';
+import { SideNavComponent } from './side-nav/side-nav.component';
+import { FamilyDetailsComponent } from './family-management/family-details/family-details.component';
+import { AddFamilyComponent } from './family-management/add-family/add-family.component';
 
 
 @NgModule({
   declarations: [
-    DashboardHomeComponent,
     DashboardContentComponent,
     FamilyDetailsComponent,
-    AddFamilyComponent
+    AddFamilyComponent,
+    SideNavComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    DashboardRoutingModule,
     BaseChartDirective,
-  ], 
-    providers: [
+    HomeRoutingModule
+  ],
+  providers: [
     provideCharts(withDefaultRegisterables()),
   ],
 })
-export class DashboardModule { }
+export class HomeModule { }
