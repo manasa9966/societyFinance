@@ -1,1 +1,61 @@
+@if(!this.sharedService.isUserLoggedIn()){
 <router-outlet />
+} 
+@if(this.sharedService.isUserLoggedIn()) {
+<mat-toolbar class="topbar" color="primary">
+    <button mat-icon-button (click)="sidenav.toggle()" class="mobile-toggle">
+        <mat-icon>menu</mat-icon>
+    </button>
+
+    <div class="sidenav-header">
+        <mat-icon class="app-logo">apartment</mat-icon>
+        <span class="app-title">e<span class="highlight">Society</span></span>
+    </div>
+
+    <span class="flex-spacer"></span>
+
+    <button mat-icon-button>
+        <mat-icon matBadge="5" matBadgeColor="warn">notifications</mat-icon>
+    </button>
+
+    <div class="user-info">
+        <mat-icon class="user-avatar">account_circle</mat-icon>
+        <span class="app-title">{{ displayName | titlecase }}</span>
+    </div>
+</mat-toolbar>
+
+<mat-sidenav-container class="layout-container">
+    <!-- Side Navigation -->
+    <mat-sidenav #sidenav="matSidenav" mode="side" opened class="sidenav">
+        <mat-nav-list>
+            @for (item of sideNavList; track $index) {
+            <a mat-list-item class="list" [routerLink]="'/'+item.route" routerLinkActive="active"
+                (click)="nagigateToPage(item.route)">
+                <mat-icon class="user-avatar">{{item.icon}}</mat-icon>
+                <span class="list-title">{{item.label}}</span>
+            </a>
+            }
+
+
+            <mat-divider class="list"></mat-divider>
+
+
+            <a mat-list-item class="list" (click)="logout()">
+                <mat-icon class="user-avatar">arrow_back_ios</mat-icon>
+                <span class="list-title">Logout</span>
+            </a>
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <!-- Main Content -->
+    <mat-sidenav-content>
+        <!-- @if(this.pageName === 'dashboardPage'){
+      <app-dashboard-content></app-dashboard-content>
+    } 
+    @if (this.pageName === 'family') {
+      <app-family-details></app-family-details>
+    } -->
+        <router-outlet />
+    </mat-sidenav-content>
+</mat-sidenav-container>
+}

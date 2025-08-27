@@ -1,0 +1,148 @@
+@if (!loading) {
+<div class="family-container">
+    <div class="header">
+        <div class="title-container">
+            <h1 class="main-heading">Payments</h1>
+            <h4 class="sub-heading">Manage all payment requests</h4>
+        </div>
+    </div>
+
+    <mat-card class="dashboard-card mat-elevation-z8">
+        <div class="card-header">
+            <h3 class="main1-heading">
+                <mat-icon>description</mat-icon>
+                Current Maintenance Dues
+            </h3>
+        </div>
+        <mat-card-content>
+            <div class="dues-info">
+                <div class="info-item">
+                    <label>Due Amount</label>
+                    <p class="amount">₹{{ maintenance?.amount | number:'1.2-2' }}</p>
+                </div>
+
+                <div class="info-item">
+                    <label>Due Date</label>
+                    <p class="date">{{ maintenance?.dueDate | date:'d MMMM, y' }}</p>
+                </div>
+
+                <div class="info-item">
+                    <label>Status</label>
+                    <span class="status-badge pending" *ngIf="maintenance?.status === 'PENDING'">
+                        Pending
+                    </span>
+                    <span class="status-badge paid" *ngIf="maintenance?.status === 'PAID'">
+                        Paid
+                    </span>
+                </div>
+            </div>
+
+            <div class="penalty-note" *ngIf="maintenance?.status === 'PENDING'">
+                <mat-icon color="warn">error_outline</mat-icon>
+                Late payment after due date will incur a penalty of ₹100.00
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="dashboard-card mat-elevation-z8">
+        <div class="card-header">
+            <h3 class="main1-heading">
+                <mat-icon>payment</mat-icon>
+                Payment Details
+            </h3>
+        </div>
+
+        <mat-card-content>
+            <!-- Tabs for payment method -->
+            <mat-tab-group>
+                <mat-tab label="Online Payment" class="bank-tab">
+                    <form [formGroup]="paymentDetailsForm" class="payment-form-grid">
+
+                        <!-- Payment Amount -->
+                        <div class="amount">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Payment Amount (₹)</mat-label>
+                                <input matInput formControlName="amount" placeholder="Enter Payment Amount">
+                                <mat-error *ngIf="paymentDetailsForm.get('amount')?.hasError('required')">
+                                    Payment Amount is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Card Number -->
+                        <div class="cardNumber">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Card Number</mat-label>
+                                <input matInput formControlName="cardNumber" placeholder="1234 5678 9012 3456" maxlength="16">
+                                <mat-error *ngIf="paymentDetailsForm.get('cardNumber')?.hasError('required')">
+                                    Card Number is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Name on Card -->
+                        <div class="cardName">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Name on Card</mat-label>
+                                <input matInput formControlName="cardName" placeholder="John Doe">
+                                <mat-error *ngIf="paymentDetailsForm.get('cardName')?.hasError('required')">
+                                    Name on Card is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Expiry Date -->
+                        <div class="expiry">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Expiry Date</mat-label>
+                                <input matInput type="number" formControlName="expiry" placeholder="MM/YY" maxlength="5">
+                                <mat-error *ngIf="paymentDetailsForm.get('expiry')?.hasError('required')">
+                                    Expiry Date is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- CVV -->
+                        <div class="cvv">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>CVV</mat-label>
+                                <input matInput formControlName="cvv" placeholder="123" type="password" maxlength="3">
+                                <mat-error *ngIf="paymentDetailsForm.get('cvv')?.hasError('required')">
+                                    CVV is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Terms -->
+                        <mat-checkbox class="terms" formControlName="terms">
+                            I agree to the terms and conditions for making this payment. I understand that this payment
+                            is for the monthly maintenance dues.
+                        </mat-checkbox>
+
+                        <!-- Submit Button -->
+                        <div class="submit">
+                            <button mat-raised-button color="primary" class="submit-button"
+                                [disabled]="paymentDetailsForm.invalid">
+                                Pay ₹{{ paymentDetailsForm.get('amount')?.value || '0.00' }}
+                            </button>
+                        </div>
+                    </form>
+                </mat-tab>
+
+                <mat-tab label="UPI Payment" [disabled]="true">
+                    <p>UPI Payment coming soon...</p>
+                </mat-tab>
+
+                <mat-tab label="Bank Transfer" [disabled]="true">
+                    <p>Bank Transfer instructions here...</p>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card-content>
+    </mat-card>
+</div>
+} @else {
+<div class="spinner">
+    <mat-spinner [strokeWidth]="5"></mat-spinner>
+    <span class="loading-txt">{{loaderText}}</span>
+</div>
+}

@@ -44,7 +44,7 @@ export class FamilyDetailsComponent implements OnInit {
       if (this.sharedService.isAdminUser()) {
         this.families = data as Family[];
       } else {
-        this.families = data.filter((family: any) => family.email === this.sharedService.getUser().email) as Family[];
+        this.families = data.filter((family: any) => family.email === this.sharedService.getUser()?.email) as Family[];
       }
       console.log(this.families);
       this.loding = false;

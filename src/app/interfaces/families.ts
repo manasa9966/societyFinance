@@ -8,3 +8,12 @@ export interface Family {
     createdAt: string;
     isActive: boolean;
 }
+
+export interface Defaulter {
+    amount: number;
+    dueDate: string;
+    familyId: string;
+    status: string;
+    familyName?: string; 
+    flatNumber?: string; 
+}    

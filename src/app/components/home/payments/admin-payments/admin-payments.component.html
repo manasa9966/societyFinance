@@ -1,0 +1,214 @@
+<ng-template #paymentRequestDialog>
+    <div class="form-container">
+        <h1 class="main-heading">Add Payment Request</h1>
+        <h4 class="sub-heading">Fill in the details below to add new payment request</h4>
+        <div class="family-form-grid">
+            <form [formGroup]="paymentRequestForm">
+                <div class="flatNumber">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Flat Number</mat-label>
+                        <mat-select formControlName="flatNumber">
+                            @for (item of families; track $index) {
+                            <mat-option [value]="item.flatNumber">{{item.flatNumber + ' - ' +
+                                item.familyName}}</mat-option>
+                            }
+                        </mat-select>
+                        <mat-error *ngIf="paymentRequestForm.get('flatNumber')?.hasError('required')">
+                            Flat Number is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="familyName">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Due Amount</mat-label>
+                        <input type="number" matInput formControlName="dueAmount" placeholder="Enter due amount">
+                        <mat-error *ngIf="paymentRequestForm.get('dueAmount')?.hasError('required')">
+                            Due Amount is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="submit">
+                    <button mat-raised-button class="submit-button" (click)="onSubmit()"
+                        [disabled]="paymentRequestForm.invalid">Create Payment Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>
+
+@if (!loading) {
+<div class="family-container">
+    <div class="header">
+        <div class="title-container">
+            <h1 class="main-heading">Payments</h1>
+            <h4 class="sub-heading">Manage all payment requests and view defaulters</h4>
+        </div>
+        @if (this.sharedService.isAdminUser()) {
+        <button mat-raised-button color="primary" (click)="openDialog(paymentRequestDialog)">+ New Payment
+            Request</button>
+        }
+    </div>
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="true" class="expanded">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h1 class="expansion-heading">Defaulters</h1>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="summary-cards">
+                <div class="card">
+                    <div class="card-value">{{totalDefaulters}}</div>
+                    <div class="card-label">Total Defaulters</div>
+                </div>
+                <div class="card">
+                    <div class="card-value">₹{{totalAmountDue}}</div>
+                    <div class="card-label">Total Pending Amount</div>
+                </div>
+            </div>
+            <div class="table-container">
+                <table mat-table [dataSource]="dataSource" class="full-width-table">
+
+                    <!-- Flat / Unit -->
+                    <ng-container matColumnDef="flatNumber">
+                        <th mat-header-cell *matHeaderCellDef> Flat/Unit No. </th>
+                        <td mat-cell *matCellDef="let element"> {{element.flatNumber}} </td>
+                    </ng-container>
+
+                    <!-- Resident Name -->
+                    <ng-container matColumnDef="familyName">
+                        <th mat-header-cell *matHeaderCellDef> Resident Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.familyName}} </td>
+                    </ng-container>
+
+                    <!-- Amount -->
+                    <ng-container matColumnDef="amount">
+                        <th mat-header-cell *matHeaderCellDef> Due Amount (₹) </th>
+                        <td mat-cell *matCellDef="let element"> ₹{{element.amount}} </td>
+                    </ng-container>
+
+                    <!-- Days Overdue -->
+                    <ng-container matColumnDef="daysOverdue">
+                        <th mat-header-cell *matHeaderCellDef> Days Overdue </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="badge" [ngClass]="{'low': element.daysOverdue <= 3, 
+                            'medium': element.daysOverdue > 3 && element.daysOverdue <= 7, 
+                            'high': element.daysOverdue > 7}">
+                                {{element.daysOverdue}} days
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Status -->
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef> Payment Status </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="status-badge pending">{{element.status}}</span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Actions -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef class="action-header"> Actions </th>
+                        <td mat-cell *matCellDef="let element" class="actions-cell">
+                            <button mat-raised-button color="primary" class="btn-remind">
+                                <mat-icon>email</mat-icon> Remind
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <mat-paginator class="paginator" [pageSize]="5" [pageSizeOptions]="[5, 15, 25]"
+                    showFirstLastButtons></mat-paginator>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="true" class="expanded">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h1 class="expansion-heading">Inward Payments</h1>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="summary-cards">
+                <div class="card">
+                    <div class="card-value">{{totalDefaulters}}</div>
+                    <div class="card-label">Total Defaulters</div>
+                </div>
+                <div class="card">
+                    <div class="card-value">₹{{totalAmountDue}}</div>
+                    <div class="card-label">Total Pending Amount</div>
+                </div>
+                <div class="card">
+                    <div class="card-value">₹{{totalAmountDue}}</div>
+                    <div class="card-label">Total Pending Amount</div>
+                </div>
+            </div>
+            <div class="table-container">
+                <table mat-table [dataSource]="dataSource" class="full-width-table">
+
+                    <!-- Flat / Unit -->
+                    <ng-container matColumnDef="flatNumber">
+                        <th mat-header-cell *matHeaderCellDef> Flat/Unit No. </th>
+                        <td mat-cell *matCellDef="let element"> {{element.flatNumber}} </td>
+                    </ng-container>
+
+                    <!-- Resident Name -->
+                    <ng-container matColumnDef="familyName">
+                        <th mat-header-cell *matHeaderCellDef> Resident Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.familyName}} </td>
+                    </ng-container>
+
+                    <!-- Amount -->
+                    <ng-container matColumnDef="amount">
+                        <th mat-header-cell *matHeaderCellDef> Due Amount (₹) </th>
+                        <td mat-cell *matCellDef="let element"> ₹{{element.amount}} </td>
+                    </ng-container>
+
+                    <!-- Days Overdue -->
+                    <ng-container matColumnDef="daysOverdue">
+                        <th mat-header-cell *matHeaderCellDef> Days Overdue </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="badge" [ngClass]="{'low': element.daysOverdue <= 3, 
+                            'medium': element.daysOverdue > 3 && element.daysOverdue <= 7, 
+                            'high': element.daysOverdue > 7}">
+                                {{element.daysOverdue}} days
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Status -->
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef> Payment Status </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="status-badge pending">{{element.status}}</span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Actions -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef class="action-header"> Actions </th>
+                        <td mat-cell *matCellDef="let element" class="actions-cell">
+                            <button mat-raised-button color="primary" class="btn-remind">
+                                <mat-icon>email</mat-icon> Remind
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <mat-paginator class="paginator" [pageSize]="5" [pageSizeOptions]="[5, 15, 25]"
+                    showFirstLastButtons></mat-paginator>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>
+} @else {
+<div class="spinner">
+    <mat-spinner [strokeWidth]="5"></mat-spinner>
+    <span class="loading-txt">{{loaderText}}</span>
+</div>
+}
