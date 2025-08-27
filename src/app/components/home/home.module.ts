@@ -6,9 +6,10 @@ import { DashboardContentComponent } from './dashboard-content/dashboard-content
 import { MaterialModule } from '../../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
-import { SideNavComponent } from './side-nav/side-nav.component';
 import { FamilyDetailsComponent } from './family-management/family-details/family-details.component';
 import { AddFamilyComponent } from './family-management/add-family/add-family.component';
+import { AdminPaymentsComponent } from './payments/admin-payments/admin-payments.component';
+import { UserPaymentsComponent } from './payments/user-payments/user-payments.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { AddFamilyComponent } from './family-management/add-family/add-family.co
     DashboardContentComponent,
     FamilyDetailsComponent,
     AddFamilyComponent,
-    SideNavComponent
+    AdminPaymentsComponent,
+    UserPaymentsComponent,
   ],
   imports: [
     CommonModule,
@@ -24,8 +26,8 @@ import { AddFamilyComponent } from './family-management/add-family/add-family.co
     FormsModule,
     ReactiveFormsModule,
     BaseChartDirective,
-    HomeRoutingModule
-  ],
+    HomeRoutingModule,
+],
   providers: [
     provideCharts(withDefaultRegisterables()),
   ],

@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
 import { AuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { UserResolver } from './guards/userResolvers';
+import { CustomAuthGuard } from './guards/auth.guard';
+import { Auth } from '@angular/fire/auth';
 
 const redirectToLogin = () => redirectUnauthorizedTo('/auth/login');
 
@@ -13,7 +15,7 @@ const routes: Routes = [
     loadChildren: () => import('./components/authentication/authentication.module').then(m => m.AuthenticationModule)
   },
   {
-    path: 'dashboard',
+    path: 'home',
     loadChildren: () => import('./components/home/home.module').then(m => m.HomeModule),
     canActivate: [AuthGuard],
     data: {
@@ -22,6 +24,10 @@ const routes: Routes = [
     resolve: {
       user: UserResolver
     }
+  },
+  {
+    path: '**',
+    redirectTo: '/auth/login'
   }
 ];
 

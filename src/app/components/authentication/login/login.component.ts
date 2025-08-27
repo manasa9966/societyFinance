@@ -3,6 +3,7 @@ import { Auth, AuthErrorCodes, GoogleAuthProvider, signInWithEmailAndPassword, s
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import e from 'express';
+import { SharedService } from '../../../services/shared.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
   errorMessage: string = '';
   showError = false;
   
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private router: Router, private sharedService: SharedService) {}
 
   ngOnInit(): void {
     this.initializeForm();
@@ -36,6 +37,7 @@ export class LoginComponent implements OnInit {
 
   onLogin() {
     signInWithEmailAndPassword(this.auth, this.loginForm.value.email, this.loginForm.value.password).then((res) => {
+      this.sharedService.setUser(res.user);
       this.gotoDashboard();
     }).catch((error) => {
       if(error instanceof Error) {
@@ -58,11 +60,12 @@ export class LoginComponent implements OnInit {
   }
 
   gotoDashboard() {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/home']);
   }
 
   onSignInWithGoogle() {
     signInWithPopup(this.auth, this.googleAuthProvider).then((result) => {
+      this.sharedService.setUser(result.user);
       this.gotoDashboard();
     }).catch((error) => {
       this.showError = true;
