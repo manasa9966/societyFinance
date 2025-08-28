@@ -142,6 +142,10 @@
 }
 
 
+.hint-font {
+    font-family: $font;
+}
+
 // payment details
 
 ::ng-deep .mat-mdc-tab-body {
@@ -217,10 +221,12 @@
     margin-top: 12px;
 
     .submit-button {
-        width: 100%;
+        width: 46%;
         font-family: $font;
-        border-radius: 6px;
+        border-radius: 30px;
+        color: #fff;
         font-weight: 600;
+        background-color: #1d4ed8;
         font-size: 16px;
     }
 }

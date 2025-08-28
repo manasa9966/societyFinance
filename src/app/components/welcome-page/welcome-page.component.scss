@@ -1,3 +1,5 @@
+@import '../../variable.scss';
+
 .hero-container {
   background: url('/assets/bg-image.jpg') no-repeat center center/cover;
   height: 100vh;
@@ -24,6 +26,7 @@
     max-width: 800px;
     padding: 0 20px;
     display: flex;
+    font-family: $font;
     flex-direction: column;
     justify-content: center;
     align-items: anchor-center;
@@ -32,16 +35,19 @@
 .brand-title {
   font-size: 3rem;
   font-weight: bold;
+  font-family: $font;
 }
 
 .brand-highlight {
   padding: 0 10px;
   color: white;
+  font-family: $font;
 }
 
 .subtitle {
   font-size: 1.1rem;
   margin-top: 20px;
+  font-family: $font;
   margin-bottom: 20px;
 }
 
@@ -62,6 +68,7 @@
   height: 36px;  
   font-size: 1rem;
   font-weight: bold;
+  font-family: $font;
   color: white;
   border: none;
   border-radius: 10px;
