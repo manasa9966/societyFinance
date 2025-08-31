@@ -134,20 +134,26 @@
             </mat-expansion-panel-header>
             <div class="summary-cards">
                 <div class="card">
-                    <div class="card-value">{{totalDefaulters}}</div>
-                    <div class="card-label">Total Defaulters</div>
+                    <div class="card-value green">₹{{totalInWardPayments}}</div>
+                    <div class="card-label">Total Payments Recived</div>
                 </div>
                 <div class="card">
-                    <div class="card-value">₹{{totalAmountDue}}</div>
-                    <div class="card-label">Total Pending Amount</div>
+                    <div class="card-value low">₹{{totalLateFees}}</div>
+                    <div class="card-label">Total Late Fees</div>
                 </div>
                 <div class="card">
-                    <div class="card-value">₹{{totalAmountDue}}</div>
+                    <div class="card-value red">₹{{totalAmountDue}}</div>
                     <div class="card-label">Total Pending Amount</div>
                 </div>
             </div>
             <div class="table-container">
-                <table mat-table [dataSource]="dataSource" class="full-width-table">
+                <table mat-table [dataSource]="inWardDataSource" class="full-width-table">
+
+                    <!-- Id -->
+                    <ng-container matColumnDef="paymentId">
+                        <th mat-header-cell *matHeaderCellDef> Payment ID </th>
+                        <td mat-cell *matCellDef="let element"> {{element.paymentId}} </td>
+                    </ng-container>
 
                     <!-- Flat / Unit -->
                     <ng-container matColumnDef="flatNumber">
@@ -160,6 +166,11 @@
                         <th mat-header-cell *matHeaderCellDef> Resident Name </th>
                         <td mat-cell *matCellDef="let element"> {{element.familyName}} </td>
                     </ng-container>
+                    <!-- Paid On -->
+                    <ng-container matColumnDef="paidOn">
+                        <th mat-header-cell *matHeaderCellDef> Paid On </th>
+                        <td mat-cell *matCellDef="let element"> {{element.paidOn | date : 'd MMM yyyy'}} </td>
+                    </ng-container>
 
                     <!-- Amount -->
                     <ng-container matColumnDef="amount">
@@ -167,38 +178,22 @@
                         <td mat-cell *matCellDef="let element"> ₹{{element.amount}} </td>
                     </ng-container>
 
-                    <!-- Days Overdue -->
-                    <ng-container matColumnDef="daysOverdue">
-                        <th mat-header-cell *matHeaderCellDef> Days Overdue </th>
-                        <td mat-cell *matCellDef="let element">
-                            <span class="badge" [ngClass]="{'low': element.daysOverdue <= 3, 
-                            'medium': element.daysOverdue > 3 && element.daysOverdue <= 7, 
-                            'high': element.daysOverdue > 7}">
-                                {{element.daysOverdue}} days
-                            </span>
-                        </td>
+                    <!-- Mode -->
+                    <ng-container matColumnDef="mode">
+                        <th mat-header-cell *matHeaderCellDef> Payment Mode </th>
+                        <td mat-cell *matCellDef="let element"> ONLINE </td>
                     </ng-container>
 
                     <!-- Status -->
                     <ng-container matColumnDef="status">
                         <th mat-header-cell *matHeaderCellDef> Payment Status </th>
                         <td mat-cell *matCellDef="let element">
-                            <span class="status-badge pending">{{element.status}}</span>
+                            <span class="status-badge paid">{{'COMPLETED'}}</span>
                         </td>
                     </ng-container>
 
-                    <!-- Actions -->
-                    <ng-container matColumnDef="actions">
-                        <th mat-header-cell *matHeaderCellDef class="action-header"> Actions </th>
-                        <td mat-cell *matCellDef="let element" class="actions-cell">
-                            <button mat-raised-button color="primary" class="btn-remind">
-                                <mat-icon>email</mat-icon> Remind
-                            </button>
-                        </td>
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    <tr mat-header-row *matHeaderRowDef="inwardDisplayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: inwardDisplayedColumns;"></tr>
                 </table>
                 <mat-paginator class="paginator" [pageSize]="5" [pageSizeOptions]="[5, 15, 25]"
                     showFirstLastButtons></mat-paginator>

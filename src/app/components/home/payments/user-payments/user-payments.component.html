@@ -1,6 +1,5 @@
 @if (!loading) {
-@if(!paymentScreen) {
-    <div class="family-container">
+<div class="family-container">
     <div class="header">
         <div class="title-container">
             <h1 class="main-heading">Payments</h1>
@@ -8,148 +7,163 @@
         </div>
     </div>
 
-    <mat-card class="dashboard-card mat-elevation-z8">
-        <div class="card-header">
-            <h3 class="main1-heading">
-                <mat-icon>description</mat-icon>
-                Current Maintenance Dues
-            </h3>
-        </div>
-        <mat-card-content>
+    <!-- Show maintenance dues -->
+    <mat-accordion multi>
+        <mat-expansion-panel class="dues-accordion" *ngFor="let due of maintenanceList; let i = index"
+            [expanded]="expandedIndex === i">
+            <mat-expansion-panel-header (click)="togglePanel(i)">
+                <mat-panel-title>
+                    <div class="card-header">
+                        <h3 class="main1-heading">
+                            <mat-icon>description</mat-icon>
+                            Maintenance Due
+                        </h3>
+                    </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                    <div class="card-header">
+                        @if(due.status === 'PENDING') {
+                        <h3 class="main2-heading">
+                            Due Amount:
+                            <span>{{ due.amount | currency : 'INR' }}</span>
+                        </h3>
+                        } @else {
+                        <h3 class="main2-heading paid">
+                            Status:
+                            <span>{{ due.status | titlecase }}</span>
+                        </h3>
+                        }
+                    </div>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
             <div class="dues-info">
                 <div class="info-item">
                     <label>Due Amount</label>
-                    <p class="amount">₹{{ maintenance?.amount | number:'1.2-2' }}</p>
+                    <p class="amount">₹{{ due.amount }}</p>
                 </div>
 
                 <div class="info-item">
                     <label>Due Date</label>
-                    <p class="date">{{ maintenance?.dueDate | date:'d MMMM, y' }}</p>
+                    <p class="date">{{ due.dueDate | date:'d MMMM, y' }}</p>
                 </div>
 
                 <div class="info-item">
                     <label>Status</label>
-                    <span class="status-badge pending" *ngIf="maintenance?.status === 'PENDING'">
-                        Pending
-                    </span>
-                    <span class="status-badge paid" *ngIf="maintenance?.status === 'PAID'">
-                        Paid
-                    </span>
+                    <span class="status-badge pending" *ngIf="due.status === 'PENDING'">Pending</span>
+                    <span class="status-badge paid" *ngIf="due.status === 'PAID'">Paid</span>
                 </div>
             </div>
 
-            <div class="penalty-note" *ngIf="maintenance?.status === 'PENDING'">
+            <div class="penalty-note" *ngIf="due.status === 'PENDING'">
                 <mat-icon color="warn">error_outline</mat-icon>
                 Late payment after due date will incur a penalty of ₹100.00
             </div>
-        </mat-card-content>
-    </mat-card>
 
-    <mat-card class="dashboard-card mat-elevation-z8">
-        <div class="card-header">
+            <!-- Payment Form -->
+            <ng-container *ngIf="due.status === 'PENDING'">
+                <form [formGroup]="due.form" class="payment-form-grid">
+                    <!-- Payment Amount -->
+                    <div class="amount">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Payment Amount (₹)</mat-label>
+                            <input matInput formControlName="amount" [disabled]="true">
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Card Number -->
+                    <div class="cardNumber">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Card Number</mat-label>
+                            <input matInput formControlName="cardNumber" maxlength="16" (input)="numberOnly($event)">
+                            <mat-error *ngIf="due.form.get('cardNumber')?.hasError('required')">
+                                Card Number is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Name on Card -->
+                    <div class="cardName">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Name on Card</mat-label>
+                            <input matInput formControlName="cardName">
+                            <mat-error *ngIf="due.form.get('cardName')?.hasError('required')">
+                                Name on Card is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Expiry -->
+                    <div class="expiry">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Expiry Date</mat-label>
+                            <input matInput formControlName="expiry" placeholder="MM/YY" maxlength="5"
+                                (input)="numberOnly($event)">
+                            <mat-error *ngIf="due.form.get('expiry')?.hasError('required')">
+                                Expiry Date is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- CVV -->
+                    <div class="cvv">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>CVV</mat-label>
+                            <input matInput formControlName="cvv" maxlength="3" type="password"
+                                (input)="numberOnly($event)">
+                            <mat-error *ngIf="due.form.get('cvv')?.hasError('required')">
+                                CVV is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Terms -->
+                    <mat-checkbox class="terms" formControlName="terms">
+                        I agree to the terms and conditions.
+                    </mat-checkbox>
+
+                    <!-- Pay Button -->
+                    <div class="submit">
+                        <button mat-raised-button color="primary" class="submit-button" (click)="onSubmit(due)"
+                            [disabled]="due.form.invalid || loading">
+                            Pay ₹{{ due.form.get('amount')?.value || '0.00' }}
+                        </button>
+                    </div>
+                </form>
+            </ng-container>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>
+
+<div class="history-container">
+    <mat-card class="dashboard-card">
+        <mat-card-header>
             <h3 class="main1-heading">
-                <mat-icon>payment</mat-icon>
-                Payment Details
+                <mat-icon>history</mat-icon>
+                Previous Payments
             </h3>
-        </div>
-
-        <mat-card-content>
-            <!-- Tabs for payment method -->
-            <mat-tab-group>
-                <mat-tab label="Online Payment" class="bank-tab">
-                    <form [formGroup]="paymentDetailsForm" class="payment-form-grid">
-
-                        <!-- Payment Amount -->
-                        <div class="amount">
-                            <mat-form-field appearance="outline" class="full-width">
-                                <mat-label>Payment Amount (₹)</mat-label>
-                                <input matInput formControlName="amount" placeholder="Enter Payment Amount">
-                                @if (daysOverdue > 0) {
-                                    <mat-hint class="hint-font">Includes Penalty of ₹100.00</mat-hint>
-                                }
-                                <mat-error *ngIf="paymentDetailsForm.get('amount')?.hasError('required')">
-                                    Payment Amount is required
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <!-- Card Number -->
-                        <div class="cardNumber">
-                            <mat-form-field appearance="outline" class="full-width">
-                                <mat-label>Card Number</mat-label>
-                                <input matInput formControlName="cardNumber" placeholder="1234 5678 9012 3456" maxlength="16" (input)="numberOnly($event)">
-                                <mat-error *ngIf="paymentDetailsForm.get('cardNumber')?.hasError('required')">
-                                    Card Number is required
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <!-- Name on Card -->
-                        <div class="cardName">
-                            <mat-form-field appearance="outline" class="full-width">
-                                <mat-label>Name on Card</mat-label>
-                                <input matInput formControlName="cardName" placeholder="John Doe">
-                                <mat-error *ngIf="paymentDetailsForm.get('cardName')?.hasError('required')">
-                                    Name on Card is required
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <!-- Expiry Date -->
-                        <div class="expiry">
-                            <mat-form-field appearance="outline" class="full-width">
-                                <mat-label>Expiry Date</mat-label>
-                                <input matInput type="number" formControlName="expiry" placeholder="MM/YY" maxlength="5" (input)="numberOnly($event)">
-                                <mat-error *ngIf="paymentDetailsForm.get('expiry')?.hasError('required')">
-                                    Expiry Date is required
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <!-- CVV -->
-                        <div class="cvv">
-                            <mat-form-field appearance="outline" class="full-width">
-                                <mat-label>CVV</mat-label>
-                                <input matInput formControlName="cvv" placeholder="123" type="password" maxlength="3" (input)="numberOnly($event)">
-                                <mat-error *ngIf="paymentDetailsForm.get('cvv')?.hasError('required')">
-                                    CVV is required
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-
-                        <!-- Terms -->
-                        <mat-checkbox class="terms" formControlName="terms">
-                            I agree to the terms and conditions for making this payment. I understand that this payment
-                            is for the monthly maintenance dues.
-                        </mat-checkbox>
-
-                        <!-- Submit Button -->
-                        <div class="submit">
-                            <button mat-raised-button color="primary" class="submit-button" (click)="onSubmit()"
-                                [disabled]="paymentDetailsForm.invalid">
-                                Pay ₹{{ paymentDetailsForm.get('amount')?.value || '0.00' }}
-                            </button>
-                        </div>
-                    </form>
-                </mat-tab>
-
-                <mat-tab label="UPI Payment" [disabled]="true">
-                    <p>UPI Payment coming soon...</p>
-                </mat-tab>
-
-                <mat-tab label="Bank Transfer" [disabled]="true">
-                    <p>Bank Transfer instructions here...</p>
-                </mat-tab>
-            </mat-tab-group>
+        </mat-card-header>
+        <mat-card-content class="mb-2">
+            <div class="payment-card" *ngFor="let payment of userPayments">
+                <div class="payment-left">
+                    <div class="payment-month">{{ paymentMonthYear(payment.paidOn) }}</div>
+                    <div class="payment-type">{{ 'Online Payment' }}</div>
+                </div>
+                <div class="payment-right">
+                    <div class="payment-amount">₹{{ payment.paidAmount | number:'1.2-2' }}</div>
+                    <span class="status-badge"
+                        [ngClass]="{'paid': payment.status === 'PAID', 'pending': payment.status === 'PENDING'}">
+                        {{ payment.status | titlecase }}
+                    </span>
+                </div>
+            </div>
         </mat-card-content>
     </mat-card>
 </div>
-} @else {
-    
-}
+
 } @else {
 <div class="spinner">
     <mat-spinner [strokeWidth]="5"></mat-spinner>
-    <span class="loading-txt">{{loaderText}}</span>
+    <span class="loading-txt">{{ loaderText }}</span>
 </div>
 }

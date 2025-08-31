@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -38,7 +39,8 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
     provideFirebaseApp(() => initializeApp({"projectId":"society-finance-67af2","appId":"1:68770534547:web:10329f3dd79df4d90e6966","storageBucket":"society-finance-67af2.firebasestorage.app","apiKey":"AIzaSyBlNmgqXqIc9zgdMa_QpDWeqJkGRKbR48E","authDomain":"society-finance-67af2.firebaseapp.com","messagingSenderId":"68770534547"})),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideHttpClient(withFetch())
   ],
   bootstrap: [AppComponent]
 })

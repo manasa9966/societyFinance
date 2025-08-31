@@ -67,6 +67,20 @@
                 font-size: 22px;
                 font-weight: bold;
                 margin-bottom: 5px;
+
+                &.green {
+                    color: #52c41a;
+                }
+
+                &.red {
+                    color: #ff4d4f;
+                }
+
+                &.low {
+                    color: #d48806;
+                }
+
+
             }
 
             .card-label {
