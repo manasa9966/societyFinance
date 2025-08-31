@@ -66,15 +66,11 @@ export class SharedService {
   setMaintenance(familyId: string, amount: number) {
     const now = new Date();
     const monthKey = `month_${now.getFullYear()}_${(now.getMonth() + 1).toString().padStart(2, '0')}`;
-    return this.db.object(`maintenance/${familyId}/${monthKey}`).set({
+    return this.db.list(`maintenance/${familyId}/${monthKey}`).push({
       amount,
       dueDate: new Date(new Date().getFullYear(), new Date().getMonth(), 10).toISOString(),
       status: 'PENDING'
     });
-  }
-
-  getPayments() {
-    return this.db.list('payments').valueChanges();
   }
 
   getDefaulters() {
@@ -86,8 +82,12 @@ export class SharedService {
         actions.forEach(action => {
           const familyId = action.key;
           const data = action.payload.val() as any;
-          if (data && data[monthKey]?.status?.toUpperCase() === 'PENDING') {
-            defaulters.push({ familyId, ...data[monthKey] });
+          if (data && data[monthKey]) {
+            Object.entries(data[monthKey]).forEach(([entryKey, entryValue]: [string, any]) => {
+              if (entryValue?.status?.toUpperCase() === 'PENDING') {
+                defaulters.push({ familyId, entryKey, ...entryValue });
+              }
+            });
           }
         });
         return defaulters;
@@ -98,7 +98,14 @@ export class SharedService {
   getAssignedMaintenance(familyId: string) {
     const now = new Date();
     const monthKey = `month_${now.getFullYear()}_${(now.getMonth() + 1).toString().padStart(2, '0')}`;
-    return this.db.object(`maintenance/${familyId}/${monthKey}`).valueChanges();
+    return this.db.list(`maintenance/${familyId}/${monthKey}`)
+      .snapshotChanges()
+      .pipe(
+        map(actions => actions.map(action => ({
+          key: action.key,
+          ...action.payload.val() as object
+        })))
+      );
   }
 
   makePayment(familyId: string, amount: number) {

@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TemplateRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 
 @Component({
   selector: 'app-admin-payments',
@@ -19,22 +20,30 @@ export class AdminPaymentsComponent implements OnInit {
   loaderText: string = 'Loading...';
   families: Family[] = [];
   defaulters: Defaulter[] = [];
+  userPayments: any[] = [];
   totalDefaulters: number = 0;
   totalAmountDue: number = 0;
 
+  totalInWardPayments: number = 0;
+  totalLateFees: number = 0;
+
   displayedColumns: string[] = ['flatNumber', 'familyName', 'amount', 'daysOverdue', 'status', 'actions'];
+  inwardDisplayedColumns: string[] = ['paymentId', 'flatNumber', 'familyName', 'paidOn', 'amount', 'mode', 'status'];
   dataSource!: MatTableDataSource<any>
+  inWardDataSource!: MatTableDataSource<any>
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     public sharedService: SharedService,
     private fb: FormBuilder,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private db: AngularFireDatabase
   ) { }
 
   ngOnInit(): void {
     this.getFamilies();
+    this.fetchAllPaymentsForAdmin();
     this.initializeForm();
   }
 
@@ -66,6 +75,40 @@ export class AdminPaymentsComponent implements OnInit {
         this.loading = false;
       });
     });
+  }
+
+  fetchAllPaymentsForAdmin() {
+    this.loading = true;
+    this.userPayments = [];
+    this.sharedService.getFamilies().subscribe(families => {
+      families.forEach((family: any, idx, arr) => {
+        const familyId = family.id;
+        this.db.list(`payments/${familyId}`).snapshotChanges().subscribe(monthSnaps => {
+          monthSnaps.forEach(monthSnap => {
+            const monthKey = monthSnap.key;
+            const monthData = monthSnap.payload.val();
+
+            if (monthData && typeof monthData === 'object') {
+              Object.values(monthData).forEach((payment: any) => {
+                this.userPayments.push({ ...payment, familyId, familyName: family.familyName, flatNumber: family.flatNumber, monthKey });
+              });
+            }
+          });
+
+          // Only update totals and datasource after all families processed
+          if (idx === arr.length - 1) {
+            this.totalInWardPayments = this.userPayments.reduce((sum, payment) => sum + (payment.paidAmount || 0), 0);
+            this.totalLateFees = this.userPayments.reduce((sum, payment) => sum + (payment.lateFee || 0), 0);
+            this.inWardDataSource = new MatTableDataSource(this.userPayments);
+            console.log(this.userPayments);
+          }
+        });
+      });
+    }); setTimeout(() => {
+      this.inWardDataSource.paginator = this.paginator;
+    }, 1000);
+
+    this.loading = false;
   }
 
   initializeForm() {
@@ -100,4 +143,6 @@ export class AdminPaymentsComponent implements OnInit {
       });
     }
   }
+
+
 }
