@@ -10,3 +10,12 @@ export const environment = {
         appId: "1:68770534547:web:10329f3dd79df4d90e6966"
     }
 };
+
+export const emailEnviorment = {
+    production: false,
+    emai: {
+        apiKey : 'agmH5sney8nlQYnYo',
+        templateId: 'template_1c58dod',
+        serviceId: 'service_ptsz0rp'
+    }
+}

@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { User } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import emailjs from 'emailjs-com'; // Add this import
+import e from 'express';
+import { emailEnviorment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +15,7 @@ export class SharedService {
   private userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
 
-  constructor(private db: AngularFireDatabase) { }
+  constructor(private db: AngularFireDatabase, private http: HttpClient) { }
 
   setUser(user: User) {
     this.userSubject.next(user);
@@ -140,7 +144,20 @@ export class SharedService {
     });
   }
 
-
-
-
+  sendReminderViaEmailJS(data: {
+    ownerName: string;
+    flatNumber: string;
+    amountDue: number;
+    month: string;
+    dueDate: string;
+    paymentLink: string;
+    ownerEmail: string;
+  }): Promise<any> {
+    return emailjs.send(
+      emailEnviorment.emai.serviceId,
+      emailEnviorment.emai.templateId,
+      data,
+      emailEnviorment.emai.apiKey
+    );
+  }
 }
