@@ -1,0 +1,243 @@
+@import '../../../../variable.scss';
+
+.outward-container {
+    padding: 20px;
+    background: #f5f7fb;
+
+    .main-heading {
+        font-size: 24px;
+        font-weight: 700;
+        font-family: $font;
+        margin-bottom: 20px;
+    }
+
+    .form-card {
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); // Always 2 columns
+        gap: 4px 8px;
+        margin: 15px 25px 0px 25px;
+        grid-template-areas:
+            "invoice-input invoice-date"
+            "vendor-name amount-field"
+            "payment-method payment-date"
+            "description description"
+            "file-upload file-upload"
+            "file-info file-info"
+            "notes notes";
+    }
+
+    .currency-input {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        .currency-select {
+            width: 100px;
+        }
+
+        .amount-field {
+            flex: 1;
+        }
+    }
+
+    .file-upload {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        border: 2px dashed #ccc;
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+        cursor: pointer;
+        background: #fafafa;
+
+        input[type="file"] {
+            display: none;
+        }
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 20px;
+    }
+}
+
+.spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    flex-direction: column;
+
+    mat-spinner {
+        width: 70px !important;
+        height: 70px !important;
+        border-width: 5px !important;
+        color: $blue !important;
+    }
+
+    .loading-txt {
+        margin-top: 15px;
+        font-size: 16px;
+        color: #555;
+        font-family: $font;
+        font-weight: 500;
+    }
+}
+
+.invoice-input {
+    grid-area: invoice-input;
+    display: grid;
+    margin: 1.5% 0% 1.5% 0%;
+    width: 85%;
+}
+
+.invoice-date {
+    grid-area: invoice-date;
+    display: grid;
+    margin: 1.5% 0% 1.5% 0%;
+    width: 85%;
+}
+
+.vendor-name {
+    grid-area: vendor-name;
+    display: grid;
+    margin: 1.5% 0% 1.5% 0%;
+    width: 85%;
+}
+
+.amount-field {
+    grid-area: amount-field;
+    display: grid;
+    margin: 1.5% 0% 1.5% 0%;
+    width: 85%;
+}
+
+.payment-method {
+    grid-area: payment-method;
+    display: grid;
+    margin: 1.5% 0% 1.5% 0%;
+    width: 85%;
+}
+
+.payment-date {
+    grid-area: payment-date;
+    display: grid;
+    margin: 1.5% 0% 1.5% 0%;
+    width: 85%;
+}
+
+.description {
+    grid-area: description;
+    display: grid;
+    margin: 1.5% 0% 1.5% 0%;
+    width: 93%;
+}
+
+.notes {
+    grid-area: notes;
+    display: grid;
+    margin: 1.5% 0% 1.5% 0%;
+    width: 93%;
+}
+
+
+
+
+
+.full-width {
+    grid-column: span 2; // For fields like Notes or File Upload
+}
+
+.currency-input {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    .currency-select {
+        width: 120px;
+    }
+
+    .amount-field {
+        flex: 1;
+    }
+}
+
+.file-upload {
+    grid-area: file-upload;
+    display: grid;
+    margin: 1.5% 0% 1.5% 0%;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    width: 93%;
+    padding: 8rem !important;
+    text-align: center;
+    cursor: pointer;
+    background: #fafafa;
+
+    input[type="file"] {
+        display: none;
+    }
+}
+
+.main1-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: $font;
+    color: #1d4ed8; // blue heading
+    font-size: 20px;
+    margin-left: 25px;
+    font-weight: 700;
+
+    mat-icon {
+        color: #1d4ed8; // blue heading
+    }
+}
+
+.file-info {
+    display: grid;
+    grid-area: file-info;
+    width: 93%;
+    align-items: center;
+
+    .file {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    mat-icon {
+        color: #1d4ed8; // blue heading
+    }
+}
+
+.submit-button {
+    width: 35%;
+    height: 45px;
+    margin: 2% 0% 2% 0%;
+    font-family: $font;
+    border-radius: 30px;
+    color: #fff;
+    font-weight: 600;
+    background-color: #1d4ed8;
+    font-size: 16px;
+}
+
+.submit-button:hover {
+    color: #1d4ed8;
+    background-color: #fff;
+    border: 1px solid #1d4ed8;
+}
+
+.submit-button:disabled {
+    opacity: 0.3;
+}

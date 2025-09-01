@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import emailjs from 'emailjs-com'; // Add this import
 import e from 'express';
 import { emailEnviorment } from '../../environments/environment';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,11 @@ export class SharedService {
   private userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
 
-  constructor(private db: AngularFireDatabase, private http: HttpClient) { }
+  constructor(
+    private db: AngularFireDatabase,
+    private http: HttpClient,
+    private storage: AngularFireStorage // Add this if not present
+  ) { }
 
   setUser(user: User) {
     this.userSubject.next(user);
@@ -144,6 +149,8 @@ export class SharedService {
     });
   }
 
+  //Reminder Email
+
   sendReminderViaEmailJS(data: {
     ownerName: string;
     flatNumber: string;
@@ -160,4 +167,69 @@ export class SharedService {
       emailEnviorment.emai.apiKey
     );
   }
+
+  // Outward Payments
+
+  async createOutwardPayment(
+    data: any,
+    file: File,
+    name: string,
+    families: any[],
+    userEmail: string
+  ): Promise<void> {
+    const filePath = `invoices/${Date.now()}_${name}`;
+    const fileRef = this.storage.ref(filePath);
+    // Find familyId by user email
+    const family = families.find(fam => fam.email === userEmail);
+    const familyId = family ? family.id : null;
+
+    // Push to DB
+    const paymentId = this.db.createPushId();
+    await this.db.object(`outwardPayments/${paymentId}`).set({
+      createdBy: familyId,
+      createdAt: new Date().toISOString(),
+      vendorName: data.vendorName,
+      description: data.description,
+      amount: data.invoiceAmount,
+      invoiceNumber: data.invoiceNumber,
+      invoiceDate: data.invoiceDate,
+      paymentMethod: data.paymentMethod,
+      paymentDate: data.paymentDate,
+      fileName: `invoices/${Date.now()}_${name}`,
+      status: "PENDING",
+      checker: { checkerId: "", checkedAt: "" },
+      notes: data.notes || ""
+    });
+  }
+
+  getAllOutwardPayments(): Observable<any[]> {
+    return this.db.list('outwardPayments').snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({
+          id: c.payload.key,
+          ...c.payload.val() as object
+        }))
+      )
+    );
+  }
+
+  approvePayment(familyId: string, paymentId: string) {
+    const checkerId = familyId;
+    this.db.object(`outwardPayments/${paymentId}`).update({
+      status: "APPROVED",
+      "checker/checkerId": checkerId,
+      "checker/checkedAt": new Date().toISOString()
+    });
+  }
+
+  rejectPayment(familyId: string, paymentId: string, notes: string) {
+    const checkerId = familyId;
+    this.db.object(`outwardPayments/${paymentId}`).update({
+      status: "REJECTED",
+      "checker/checkerId": checkerId,
+      "checker/checkedAt": new Date().toISOString(),
+      notes
+    });
+  }
+
 }
