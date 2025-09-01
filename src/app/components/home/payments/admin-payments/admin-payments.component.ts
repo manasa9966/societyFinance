@@ -38,12 +38,11 @@ export class AdminPaymentsComponent implements OnInit {
     public sharedService: SharedService,
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private db: AngularFireDatabase
+    private db: AngularFireDatabase,
   ) { }
 
   ngOnInit(): void {
     this.getFamilies();
-    this.fetchAllPaymentsForAdmin();
     this.initializeForm();
   }
 
@@ -63,16 +62,18 @@ export class AdminPaymentsComponent implements OnInit {
             ...defaulter,
             familyName: family ? family.familyName : 'Unknown',
             flatNumber: family ? family.flatNumber : 'Unknown',
+            email: family ? family.email : 'test@gmail.com',
             daysOverdue: daysOverdue > 0 ? daysOverdue : 0
           };
         });
         this.totalDefaulters = this.defaulters.length;
         this.totalAmountDue = this.defaulters.reduce((sum, defaulter) => sum + defaulter.amount, 0);
         this.dataSource = new MatTableDataSource(this.defaulters);
+        console.log('defaulters',this.defaulters);
+        this.fetchAllPaymentsForAdmin();
         setTimeout(() => {
           this.dataSource.paginator = this.paginator;
         }, 1000);
-        this.loading = false;
       });
     });
   }
@@ -100,7 +101,7 @@ export class AdminPaymentsComponent implements OnInit {
             this.totalInWardPayments = this.userPayments.reduce((sum, payment) => sum + (payment.paidAmount || 0), 0);
             this.totalLateFees = this.userPayments.reduce((sum, payment) => sum + (payment.lateFee || 0), 0);
             this.inWardDataSource = new MatTableDataSource(this.userPayments);
-            console.log(this.userPayments);
+            console.log('Inward payments',this.userPayments);
           }
         });
       });
@@ -144,5 +145,35 @@ export class AdminPaymentsComponent implements OnInit {
     }
   }
 
+  sendReminder(email: string) {
+    this.loading = true;
+    this.loaderText = 'Sending Reminder...';
+    const data = this.defaulters.find(defaulter => defaulter.email === email) as Defaulter;
+    console.log('Sending reminder to:',email, data);
+    const formattedDueDate = new Date(data.dueDate).toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+    const emailData = {
+      ownerName: data.familyName as string,
+      flatNumber: data.flatNumber as string,
+      amountDue: data.amount,
+      month: new Date().toLocaleString('default', { month: 'long' }),
+      dueDate: data.dueDate ? formattedDueDate : 'N/A',
+      paymentLink: 'www.google.com',
+      ownerEmail: email,
+    };
+
+    this.sharedService.sendReminderViaEmailJS(emailData)
+      .then(() => {
+        this.loading = false;
+        alert('Reminder sent!')
+      })
+      .catch(err => {
+        this.loading = false;
+        alert('Failed to send reminder.');
+      });
+  }
 
 }
