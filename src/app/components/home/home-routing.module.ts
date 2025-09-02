@@ -6,6 +6,8 @@ import { AdminPaymentsComponent } from './payments/admin-payments/admin-payments
 import { UserPaymentsComponent } from './payments/user-payments/user-payments.component';
 import { UserOutwardPaymentsComponent } from './payments/user-outward-payments/user-outward-payments.component';
 import { AdminOutwardPaymentsComponent } from './payments/admin-outward-payments/admin-outward-payments.component';
+import { ActivitiesComponent } from './other/activities/activities.component';
+import { ComplaintsComponent } from './other/complaints/complaints.component';
 
 const routes: Routes = [
   { path: '', component: DashboardContentComponent },
@@ -15,6 +17,8 @@ const routes: Routes = [
   { path: 'makePayment', component: UserPaymentsComponent },
   { path: 'outwardPayments', component: UserOutwardPaymentsComponent },
   { path: 'viewOutwardPayments', component: AdminOutwardPaymentsComponent },
+  { path: 'activities', component: ActivitiesComponent },
+  { path: 'complaints', component: ComplaintsComponent },
 ];
 
 @NgModule({

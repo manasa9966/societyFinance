@@ -231,4 +231,51 @@ export class SharedService {
     });
   }
 
+  //Activities
+
+  getEvents() {
+    return this.db.list('activities').snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => {
+          const data: any = c.payload.val();
+          return {
+            Id: c.payload.key,
+            Subject: data.Subject,
+            StartTime: new Date(data.StartTime),
+            EndTime: new Date(data.EndTime),
+            IsAllDay: data.IsAllDay ?? false
+          };
+        })
+      )
+    );
+  }
+
+  addEvent(event: any) {
+    return this.db.list('activities').push(event);
+  }
+
+  updateEvent(id: string, event: any) {
+    return this.db.object(`activities/${id}`).update(event);
+  }
+
+  deleteEvent(id: string) {
+    return this.db.object(`activities/${id}`).remove();
+  }
+
+  //Complaints
+
+  submitComplaint(complaint: any) {
+    complaint.createdAt = new Date().toISOString();
+    return this.db.list('complaints').push(complaint);
+  }
+
+  getComplaints() {
+    return this.db.list('complaints').snapshotChanges().pipe(
+      map(actions => actions.map(action => ({
+        id: action.key,
+        ...action.payload.val() as object
+      })))
+    );
+  }
+
 }

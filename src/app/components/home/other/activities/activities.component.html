@@ -1,0 +1,10 @@
+<ejs-schedule
+  #schedule
+  height="650px"
+  [(selectedDate)]="selectedDate"
+  [eventSettings]="eventSettings"
+  currentView="Week"
+  (popupOpen)="this.sharedService.isAdminUser() ? onPopupOpen($event) : $event.cancel = true"
+  (actionBegin)="onActionBegin($event)" 
+>
+</ejs-schedule>

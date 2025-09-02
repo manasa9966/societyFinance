@@ -12,6 +12,9 @@ import { AdminPaymentsComponent } from './payments/admin-payments/admin-payments
 import { UserPaymentsComponent } from './payments/user-payments/user-payments.component';
 import { AdminOutwardPaymentsComponent } from './payments/admin-outward-payments/admin-outward-payments.component';
 import { UserOutwardPaymentsComponent } from './payments/user-outward-payments/user-outward-payments.component';
+import { ScheduleModule, RecurrenceEditorModule } from '@syncfusion/ej2-angular-schedule';
+import { ActivitiesComponent } from './other/activities/activities.component';
+import { ComplaintsComponent } from './other/complaints/complaints.component';
 
 
 @NgModule({
@@ -23,10 +26,14 @@ import { UserOutwardPaymentsComponent } from './payments/user-outward-payments/u
     UserPaymentsComponent,
     AdminOutwardPaymentsComponent,
     UserOutwardPaymentsComponent,
+    ActivitiesComponent,
+    ComplaintsComponent,
   ],
   imports: [
     CommonModule,
     MaterialModule,
+    ScheduleModule,
+    RecurrenceEditorModule,
     FormsModule,
     ReactiveFormsModule,
     BaseChartDirective,
