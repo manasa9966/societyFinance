@@ -213,22 +213,21 @@ export class SharedService {
     );
   }
 
-  approvePayment(familyId: string, paymentId: string) {
+  approvePayment(familyId: string, paymentId: string): Promise<void> {
     const checkerId = familyId;
-    this.db.object(`outwardPayments/${paymentId}`).update({
+    return this.db.object(`outwardPayments/${paymentId}`).update({
       status: "APPROVED",
       "checker/checkerId": checkerId,
       "checker/checkedAt": new Date().toISOString()
     });
   }
 
-  rejectPayment(familyId: string, paymentId: string, notes: string) {
+  rejectPayment(familyId: string, paymentId: string, notes?: string): Promise<void> {
     const checkerId = familyId;
-    this.db.object(`outwardPayments/${paymentId}`).update({
+    return this.db.object(`outwardPayments/${paymentId}`).update({
       status: "REJECTED",
       "checker/checkerId": checkerId,
       "checker/checkedAt": new Date().toISOString(),
-      notes
     });
   }
 
