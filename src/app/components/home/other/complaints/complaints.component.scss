@@ -1,0 +1,219 @@
+@import '../../../../variable.scss';
+
+.main-heading {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: $font;
+    margin-bottom: 20px;
+}
+
+.sub-heading {
+    font-size: 16px;
+    font-weight: 500;
+    font-family: $font;
+    color: #666;
+}
+
+.form-container {
+    padding: 2% 3.5% 3.5% 3.5%;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    min-height: 90vh;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.family-form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "flatNumber"
+        "complaintTitle"
+        "category"
+        "description"
+        "submit";
+}
+
+.flatNumber {
+    grid-area: flatNumber;
+    display: grid;
+    margin: 1.5% 0% 1.5% 0%;
+    width: 85%;
+}
+
+.complaintTitle {
+    grid-area: complaintTitle;
+    display: grid;
+    margin: 1.5% 0% 1.5% 0%;
+    width: 85%;
+}
+
+.category {
+    grid-area: category;
+    display: grid;
+    margin: 1.5% 0% 1.5% 0%;
+    width: 85%;
+}
+
+.description {
+    grid-area: description;
+    display: grid;
+    margin: 1.5% 0% 1.5% 0%;
+    width: 85%;
+}
+
+.email {
+    grid-area: email;
+    display: grid;
+    margin: 1.5% 0% 1.5% 0%;
+    width: 85%;
+}
+
+.familyMembers {
+    grid-area: familyMembers;
+    display: grid;
+    margin: 1.5% 0% 1.5% 0%;
+    width: 85%;
+}
+
+.submit {
+    grid-area: submit;
+    display: grid;
+    margin: 1.5% 0% 1.5% 60%;
+    width: 25%;
+
+    .submit-button {
+        border-radius: 36px;
+        border: 2px solid #1a73e8 !important;
+        background: white !important;
+        color: #1a73e8 !important;
+        font-family: $font;
+        font-weight: 500;
+    }
+
+    .submit-button:hover {
+        border: 2px solid #1a73e8 !important;
+        background: #1a73e8 !important;
+        color: white !important;
+    }
+
+    .submit-button:disabled {
+        opacity: 0.3;
+    }
+}
+
+.spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    flex-direction: column;
+
+    mat-spinner {
+        width: 70px !important;
+        height: 70px !important;
+        border-width: 5px !important;
+        color: $blue !important;
+    }
+
+    .loading-txt {
+        margin-top: 15px;
+        font-size: 16px;
+        color: #555;
+        font-family: $font;
+        font-weight: 500;
+    }
+}
+
+.complaint-container {
+    padding: 20px;
+    background: #f5f7fb;
+    min-height: 90vh;
+
+    .main-heading {
+        font-size: 24px;
+        font-weight: 700;
+        font-family: $font;
+        margin-bottom: 20px;
+    }
+
+    .sub-heading {
+        font-size: 16px;
+        font-weight: 500;
+        font-family: $font;
+        color: #666;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 25px;
+
+        button {
+            font-family: $font;
+            font-weight: 600;
+            padding: 6px 16px;
+            color: #fff;
+            background-color: #1a73e8;
+            border-radius: 8px;
+        }
+
+        button:hover {
+            background-color: #fff;
+            color: #1a73e8;
+            border: 1px solid #1a73e8;
+        }
+    }
+
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 20px;
+    }
+
+    .dashboard-card {
+        border-radius: 12px;
+        padding: 16px;
+        background: #fff;
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+
+            .family-name {
+                font-size: 18px;
+                font-weight: 600;
+            }
+
+            .flat-badge {
+                background-color: #1a73e8;
+                color: #fff;
+                font-size: 12px;
+                padding: 4px 10px;
+                border-radius: 20px;
+                font-weight: 500;
+            }
+        }
+
+        mat-divider {
+            margin-bottom: 12px;
+        }
+
+        .card-content {
+            p {
+                font-size: 14px;
+                margin: 8px 0;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                mat-icon {
+                    font-size: 18px;
+                    color: #444;
+                }
+            }
+        }
+    }
+}

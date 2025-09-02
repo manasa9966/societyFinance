@@ -1,0 +1,25 @@
+@import '../../../../variable.scss';
+
+::ng-deep .e-tbar-btn-text {
+    font-family: $font;
+}
+
+::ng-deep .e-time-slots {
+    font-family: $font
+}
+
+::ng-deep .e-header-day {
+    font-family: $font;
+}
+
+::ng-deep .e-header-date {
+    font-family: $font;
+}
+
+::ng-deep .e-appointment-details {
+    font-family: $font;
+}
+
+::ng-deep .e-schedule .e-vertical-view .e-day-wrapper .e-appointment {
+    background: $blue !important;
+}

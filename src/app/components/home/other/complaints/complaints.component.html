@@ -1,0 +1,99 @@
+@if (!loding) {
+@if(!this.sharedService.isAdminUser()) {
+<div class="form-container">
+    <h1 class="main-heading">Raise a Complaint</h1>
+    <h4 class="sub-heading">Fill in the details below to raise a new complaints</h4>
+
+    <div class="family-form-grid">
+        <form [formGroup]="complaintsForm">
+
+            <div class="flatNumber">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Flat Number</mat-label>
+                    <mat-select formControlName="flatNumber">
+                        @for (item of families; track $index) {
+                        <mat-option [value]="item.flatNumber">{{item.flatNumber + ' - ' +
+                            item.familyName}}</mat-option>
+                        }
+                    </mat-select>
+                    <mat-error *ngIf="complaintsForm.get('flatNumber')?.hasError('required')">
+                        Flat Number is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="complaintTitle">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Complaint Details</mat-label>
+                    <input matInput formControlName="complaintTitle" placeholder="Eg. Leak In Bathroom">
+                    <mat-error *ngIf="complaintsForm.get('complaintTitle')?.hasError('required')">
+                        Complaint Details are required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="category">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Complaint Category</mat-label>
+                    <mat-select formControlName="category">
+                        <mat-option value="maintenance">Maintenance</mat-option>
+                        <mat-option value="security">Security</mat-option>
+                        <mat-option value="other">Other</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="complaintsForm.get('category')?.hasError('required')">
+                        Category is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="description">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput type="text" formControlName="description"
+                        placeholder="Enter Detail Complaint...."></textarea>
+                    <mat-error *ngIf="complaintsForm.get('description')?.hasError('required')">
+                        Description is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="submit">
+                <button mat-raised-button class="submit-button" [disabled]="complaintsForm.invalid" (click)="onSubmit()">Register a
+                    Complaint</button>
+            </div>
+        </form>
+    </div>
+</div>
+} @else {
+<div class="complaint-container">
+    <div class="header">
+        <div class="title-container">
+            <h1 class="main-heading">Complaint Details</h1>
+            <h4 class="sub-heading">View complaints raised by residents</h4>
+        </div>
+    </div>
+    <div class="card-container">
+        @for (item of complaintsList; track $index) {
+        <mat-card class="dashboard-card mat-elevation-z4">
+            <div class="card-header">
+                <span class="family-name">{{item.complaintTitle | titlecase }}</span>
+                <span class="flat-badge">{{ 'Flat : ' + item.flatNumber }}</span>
+            </div>
+            <mat-divider></mat-divider>
+            <mat-card-content class="card-content">
+                <p>{{ item.description }}</p>
+                <br>
+                <p style="color: #1a73e8;"><mat-icon>settings</mat-icon> {{ item.category | titlecase }}</p>
+            </mat-card-content>
+        </mat-card>
+        }
+    </div>
+</div>
+
+}
+} @else {
+<div class="spinner">
+    <mat-spinner [strokeWidth]="5"></mat-spinner>
+    <span class="loading-txt">{{loaderText}}</span>
+</div>
+}
