@@ -278,4 +278,19 @@ export class SharedService {
     );
   }
 
+
+  //Reports
+
+  getAllInwardPayments(): Observable<any[]> {
+    return this.db.list('payments').snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({
+          id: c.payload.key,
+          ...c.payload.val() as object
+        }))
+      )
+    );
+  }
+
+
 }

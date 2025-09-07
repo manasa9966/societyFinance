@@ -1,0 +1,53 @@
+@if (!loading) {
+<div class="family-container">
+    <div class="header">
+        <div class="title-container">
+            <h1 class="main-heading">Financial Reports</h1>
+        </div>
+    </div>
+
+    <mat-card class="financial-reports-card"> 
+    <mat-card-content>
+        <mat-tab-group mat-stretch-tabs>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="example-tab-icon">account_balance_wallet</mat-icon>
+                    Inward Payments
+                </ng-template>
+                <inward-payments></inward-payments>
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="example-tab-icon">report_problem</mat-icon>
+                    Frequent Defaulters
+                </ng-template>
+                <defaulters></defaulters>
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="example-tab-icon">calendar_today</mat-icon>
+                    Yearly Overview
+                </ng-template>
+                <yearly-overview></yearly-overview>
+            </mat-tab>
+
+            <mat-tab disabled>
+                <ng-template mat-tab-label>
+                    <mat-icon class="example-tab-icon">bar_chart</mat-icon>
+                    YoY Comparison
+                </ng-template>
+                <yoy-comparision></yoy-comparision>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>
+
+</div>
+} @else {
+<div class="spinner">
+    <mat-spinner [strokeWidth]="5"></mat-spinner>
+    <span class="loading-txt">{{loaderText}}</span>
+</div>
+}

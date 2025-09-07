@@ -73,7 +73,8 @@ export class AdminPaymentsComponent implements OnInit {
         this.fetchAllPaymentsForAdmin();
         setTimeout(() => {
           this.dataSource.paginator = this.paginator;
-        }, 1000);
+          this.inWardDataSource.paginator = this.paginator;
+        }, 2000);
       });
     });
   }
@@ -81,31 +82,31 @@ export class AdminPaymentsComponent implements OnInit {
   fetchAllPaymentsForAdmin() {
     this.loading = true;
     this.userPayments = [];
+    const now = new Date();
+    const monthKey = `month_${now.getFullYear()}_${String(now.getMonth() + 1).padStart(2, '0')}`;
+
     this.sharedService.getFamilies().subscribe(families => {
       families.forEach((family: any, idx, arr) => {
         const familyId = family.id;
-        this.db.list(`payments/${familyId}`).snapshotChanges().subscribe(monthSnaps => {
-          monthSnaps.forEach(monthSnap => {
-            const monthKey = monthSnap.key;
-            const monthData = monthSnap.payload.val();
-
-            if (monthData && typeof monthData === 'object') {
-              Object.values(monthData).forEach((payment: any) => {
-                this.userPayments.push({ ...payment, familyId, familyName: family.familyName, flatNumber: family.flatNumber, monthKey });
-              });
-            }
-          });
+        this.db.object(`payments/${familyId}/${monthKey}`).valueChanges().subscribe(monthData => {
+          if (monthData && typeof monthData === 'object') {
+            Object.values(monthData).forEach((payment: any) => {
+              this.userPayments.push({ ...payment, familyId, familyName: family.familyName, flatNumber: family.flatNumber, monthKey });
+            });
+          }
 
           // Only update totals and datasource after all families processed
           if (idx === arr.length - 1) {
             this.totalInWardPayments = this.userPayments.reduce((sum, payment) => sum + (payment.paidAmount || 0), 0);
             this.totalLateFees = this.userPayments.reduce((sum, payment) => sum + (payment.lateFee || 0), 0);
             this.inWardDataSource = new MatTableDataSource(this.userPayments);
-            console.log('Inward payments',this.userPayments);
+            console.log('Inward payments', this.userPayments);
           }
         });
       });
-    }); setTimeout(() => {
+    });
+
+    setTimeout(() => {
       this.inWardDataSource.paginator = this.paginator;
     }, 1000);
 
