@@ -27,6 +27,7 @@
     "@ng-bootstrap/ng-bootstrap": "^16.0.0",
     "@popperjs/core": "^2.11.8",
     "@syncfusion/ej2-angular-schedule": "^30.2.7",
+    "@types/xlsx": "^0.0.36",
     "bootstrap": "^5.3.7",
     "chart.js": "^4.5.0",
     "emailjs-com": "^3.2.0",

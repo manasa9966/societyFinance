@@ -8,6 +8,7 @@ import { UserOutwardPaymentsComponent } from './payments/user-outward-payments/u
 import { AdminOutwardPaymentsComponent } from './payments/admin-outward-payments/admin-outward-payments.component';
 import { ActivitiesComponent } from './other/activities/activities.component';
 import { ComplaintsComponent } from './other/complaints/complaints.component';
+import { ReportsDashboardComponent } from './reports/reports-dashboard/reports-dashboard.component';
 
 const routes: Routes = [
   { path: '', component: DashboardContentComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'viewOutwardPayments', component: AdminOutwardPaymentsComponent },
   { path: 'activities', component: ActivitiesComponent },
   { path: 'complaints', component: ComplaintsComponent },
+   { path: 'reports', component: ReportsDashboardComponent },
 ];
 
 @NgModule({

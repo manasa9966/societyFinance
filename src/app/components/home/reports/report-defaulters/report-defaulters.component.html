@@ -1,0 +1,58 @@
+<div class="chart-box-container">
+    <div class="chart-container">
+        <div class="chart-header">
+            <h1 class="dashboard-sub-heading">Overview Of Defaulters</h1>
+            <button mat-raised-button color="primary" class="btn-remind" (click)="exportToExcel()">
+                <mat-icon>file_download</mat-icon>
+                Export to Excel
+            </button>
+        </div>
+
+        <div class="table-container">
+            <table mat-table [dataSource]="dataSource" class="full-width-table">
+
+                <!-- Flat / Unit -->
+                <ng-container matColumnDef="flatNumber">
+                    <th mat-header-cell *matHeaderCellDef> Flat/Unit No. </th>
+                    <td mat-cell *matCellDef="let element"> {{element.flatNumber}} </td>
+                </ng-container>
+
+                <!-- Resident Name -->
+                <ng-container matColumnDef="familyName">
+                    <th mat-header-cell *matHeaderCellDef> Resident Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.familyName}} </td>
+                </ng-container>
+
+                <!-- Amount -->
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef> Due Amount (₹) </th>
+                    <td mat-cell *matCellDef="let element"> ₹{{element.amount}} </td>
+                </ng-container>
+
+                <!-- Days Overdue -->
+                <ng-container matColumnDef="daysOverdue">
+                    <th mat-header-cell *matHeaderCellDef> Days Overdue </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="badge" [ngClass]="{'low': element.daysOverdue <= 3, 
+                            'medium': element.daysOverdue > 3 && element.daysOverdue <= 7, 
+                            'high': element.daysOverdue > 7}">
+                            {{element.daysOverdue}} days
+                        </span>
+                    </td>
+                </ng-container>
+
+                <!-- Status -->
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Payment Status </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="status-badge pending">{{element.status}}</span>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+
+    </div>
+</div>

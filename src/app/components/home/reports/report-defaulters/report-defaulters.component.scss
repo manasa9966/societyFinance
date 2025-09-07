@@ -1,0 +1,141 @@
+@import '../../../../variable.scss';
+
+.chart-box-container {
+    display: flex;
+    gap: 20px;
+}
+
+.dashboard-sub-heading {
+    font-size: 16px;
+    font-weight: bold;
+    font-family: $font;
+    margin-bottom: 20px;
+}
+
+
+.chart-container {
+    margin-top: 40px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    width: 99%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+
+    .chart-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+}
+
+//table
+
+.table-container {
+    background: #fff;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+table {
+    width: 100%;
+    font-family: $font;
+
+    th {
+        font-weight: 600;
+        font-family: $font;
+        justify-content: center;
+        align-items: center;
+        background: #f9fafc;
+    }
+
+    td,
+    th {
+        font-family: $font;
+        padding: 12px;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-family: $font;
+    font-weight: 500;
+
+    &.low {
+        background: #fff7e6;
+        color: #d48806;
+    }
+
+    &.medium {
+        background: #fff1f0;
+        color: #cf1322;
+    }
+
+    &.high {
+        background: #fff1f0;
+        color: #a8071a;
+        font-weight: bold;
+    }
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-family: $font;
+    font-size: 12px;
+    font-weight: 500;
+
+    &.pending {
+        background: #fff7e6;
+        color: #d48806;
+    }
+
+    &.paid {
+        background: #f6ffed;
+        color: #389e0d;
+    }
+}
+
+.action-header {
+    position: relative;
+    left: 4.2rem;
+}
+
+.actions-cell {
+    display: flex;
+}
+
+.btn-remind {
+    background: #1677ff;
+    font-family: $font;
+    color: #fff;
+    border-radius: 12px;
+}
+
+.btn-remind:hover {
+    background: #fff;
+    font-family: $font;
+    border: 2px solid #1677ff !important;
+    color: #1677ff;
+}
+
+.btn-paid {
+    background: #52c41a;
+    font-family: $font;
+    color: #fff;
+}
+
+.paginator {
+    font-family: $font;
+}
+
+.expanded {
+    margin-bottom: 2rem;
+    margin-top: 0.5rem;
+}

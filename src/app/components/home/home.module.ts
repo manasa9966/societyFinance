@@ -15,6 +15,11 @@ import { UserOutwardPaymentsComponent } from './payments/user-outward-payments/u
 import { ScheduleModule, RecurrenceEditorModule } from '@syncfusion/ej2-angular-schedule';
 import { ActivitiesComponent } from './other/activities/activities.component';
 import { ComplaintsComponent } from './other/complaints/complaints.component';
+import { ReportsDashboardComponent } from './reports/reports-dashboard/reports-dashboard.component';
+import { ReportInwardPaymentsComponent } from './reports/report-inward-payments/report-inward-payments.component';
+import { ReportDefaultersComponent } from './reports/report-defaulters/report-defaulters.component';
+import { ReportYearlyOverviewComponent } from './reports/report-yearly-overview/report-yearly-overview.component';
+import { ReportYoyComparisionComponent } from './reports/report-yoy-comparision/report-yoy-comparision.component';
 
 
 @NgModule({
@@ -28,6 +33,11 @@ import { ComplaintsComponent } from './other/complaints/complaints.component';
     UserOutwardPaymentsComponent,
     ActivitiesComponent,
     ComplaintsComponent,
+    ReportsDashboardComponent,
+    ReportInwardPaymentsComponent,
+    ReportDefaultersComponent,
+    ReportYearlyOverviewComponent,
+    ReportYoyComparisionComponent,
   ],
   imports: [
     CommonModule,
